@@ -1,0 +1,384 @@
+<!-- Navigation Header (Fixed Dark Glassmorphism) -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-slate-950/40 backdrop-blur-md border-b border-white/10 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <!-- Brand Logo -->
+    <a href="#" class="flex items-center gap-2 group">
+      <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center badge-glow transition-transform group-hover:scale-105">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+        </svg>
+      </div>
+      <span class="text-xl font-bold tracking-tight text-white font-display">WealthSync</span>
+    </a>
+
+    <!-- Center Navigation Links -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Solutions</a>
+      <a href="#" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Insights</a>
+      <a href="#" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Wealth Management</a>
+      <a href="#" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">About Us</a>
+    </div>
+
+    <!-- CTA & Auth -->
+    <div class="flex items-center gap-4">
+      <a href="#" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Login</a>
+      <button class="bg-white text-slate-950 text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-slate-200 transition-all duration-200 shadow-sm active:scale-98">
+        Join Waitlist
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section with Full Page Video Background -->
+<header class="relative overflow-hidden min-h-screen flex flex-col justify-between pt-32 pb-24 px-6 bg-slate-950 text-white">
+  <!-- Full Screen Ambient Video Background -->
+  <div class="absolute inset-0 z-0">
+    <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-35 filter brightness-75 contrast-125">
+      <!-- Local source if provided by user -->
+      <source src="banking-demo.mp4" type="video/mp4">
+      <!-- Premium stock finance animation loop fallback -->
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-business-charts-and-data-on-a-screen-42521-large.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <!-- Dark radial and linear gradients for text contrast and premium depth -->
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/70 to-[#08111a] pointer-events-none"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(8,17,26,0.85)_80%)] pointer-events-none"></div>
+  </div>
+
+  <div class="relative max-w-5xl mx-auto text-center z-10 my-auto">
+    <!-- Private Alpha Access Badge -->
+    <span class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-xs font-semibold text-primary uppercase tracking-wider mb-8 badge-glow">
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+      </span>
+      Private Alpha Access Now Open
+    </span>
+
+    <!-- Hero Title -->
+    <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] mb-6 font-display">
+      Master Your Wealth<br/>
+      <span class="text-accent text-glow">with Absolute Precision</span>
+    </h1>
+
+    <!-- Lead Paragraph -->
+    <p class="max-w-2xl mx-auto text-lg md:text-xl text-slate-300 leading-relaxed mb-10 font-light">
+      Institutional-grade financial clarity for the modern professional. WealthSync integrates your global assets into a single, high-fidelity command center.
+    </p>
+
+    <!-- Hero CTAs -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+      <button class="w-full sm:w-auto px-8 py-4 bg-primary text-slate-950 font-semibold rounded-full hover:bg-primary-hover shadow-lg hover:shadow-primary/20 hover:scale-102 transition-all duration-300 flex items-center justify-center gap-2 group">
+        Join Private Access
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 11-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+      <button class="w-full sm:w-auto px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-semibold rounded-full transition-all duration-300 flex items-center justify-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-300" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+        </svg>
+        Watch Preview
+      </button>
+    </div>
+
+    <!-- Stats Cards Grid -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 text-slate-900">
+      <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-left card-glow group">
+        <span class="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-1">Assets Managed</span>
+        <span class="block text-3xl font-bold font-display text-slate-900">$14.2B+</span>
+        <div class="w-8 h-1 bg-primary mt-3 rounded-full transition-all duration-300 group-hover:w-16"></div>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-left card-glow group">
+        <span class="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-1">Growth Index</span>
+        <span class="block text-3xl font-bold font-display text-slate-900">12.4% <span class="text-sm font-normal text-slate-400">Avg</span></span>
+        <div class="w-8 h-1 bg-primary mt-3 rounded-full transition-all duration-300 group-hover:w-16"></div>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-left card-glow group">
+        <span class="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-1">Trust Score</span>
+        <span class="block text-3xl font-bold font-display text-slate-900">99.9%</span>
+        <div class="w-8 h-1 bg-primary mt-3 rounded-full transition-all duration-300 group-hover:w-16"></div>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-left card-glow group">
+        <span class="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-1">Global Users</span>
+        <span class="block text-3xl font-bold font-display text-slate-900">85k+</span>
+        <div class="w-8 h-1 bg-primary mt-3 rounded-full transition-all duration-300 group-hover:w-16"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Interface Video/Preview Section -->
+<section class="py-24 px-6 bg-slate-50 relative">
+  <div class="max-w-6xl mx-auto text-center">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 font-display">The WealthSync Interface</h2>
+    <p class="text-slate-500 max-w-xl mx-auto mb-16 text-lg leading-relaxed">
+      Seamlessly track portfolio performance and net worth across every asset class in real-time.
+    </p>
+
+    <!-- Laptop Showcase containing loop video of banking system -->
+    <div class="relative max-w-4xl mx-auto">
+      <div class="absolute -inset-2 bg-gradient-to-tr from-primary to-accent opacity-20 rounded-[2rem] blur-xl"></div>
+      <!-- Mockup Frame -->
+      <div class="relative bg-slate-900 p-4 rounded-[1.5rem] shadow-2xl border-4 border-slate-800">
+        <div class="relative aspect-video rounded-lg overflow-hidden bg-slate-950">
+          <video autoplay loop muted playsinline class="w-full h-full object-cover">
+            <!-- Local source if provided by user -->
+            <source src="banking-demo.mp4" type="video/mp4">
+            <!-- Premium stock finance animation loop fallback -->
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-business-charts-and-data-on-a-screen-42521-large.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          
+          <!-- Glossy overlay reflection -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/10 pointer-events-none"></div>
+        </div>
+      </div>
+      <!-- Laptop base stand support visual -->
+      <div class="w-3/4 h-3 bg-slate-800 mx-auto rounded-b-xl shadow-lg border-t border-slate-700"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section (Intelligent Wealth Ecosystem) -->
+<section class="py-24 px-6 bg-white">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-20">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 font-display">Intelligent Wealth Ecosystem</h2>
+      <p class="text-slate-500 text-lg leading-relaxed">
+        A sophisticated suite of tools designed to provide unparalleled command over your financial future.
+      </p>
+    </div>
+
+    <!-- Feature Grid -->
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Feature 1: Market Analysis -->
+      <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col h-full group">
+        <div class="aspect-[4/3] w-full overflow-hidden relative">
+          <img src="market_analysis.png" alt="Market Analysis Charts" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        </div>
+        <div class="p-8 flex flex-col justify-between flex-grow">
+          <div>
+            <h3 class="text-xl font-bold text-slate-900 mb-3 font-display flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+              </svg>
+              Market Analysis
+            </h3>
+            <p class="text-slate-500 text-sm leading-relaxed mb-6">
+              Real-time predictive analytics and institutional-grade charting for precise decision making across global markets.
+            </p>
+          </div>
+          <a href="#" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 hover:text-primary tracking-wider uppercase transition-colors">
+            Explore Analysis 
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Feature 2: Wealth Tracking -->
+      <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col h-full group">
+        <div class="aspect-[4/3] w-full overflow-hidden relative">
+          <img src="wealth_tracking.png" alt="Wealth Tracking Nodes" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        </div>
+        <div class="p-8 flex flex-col justify-between flex-grow">
+          <div>
+            <h3 class="text-xl font-bold text-slate-900 mb-3 font-display flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707L6 18.414V5.586L3.707 3.293zM17.707 5.293L14 1.586v12.828l2.293 2.293A1 1 0 0018 16V6a1 1 0 00-.293-.707z" clip-rule="evenodd" />
+              </svg>
+              Wealth Tracking
+            </h3>
+            <p class="text-slate-500 text-sm leading-relaxed mb-6">
+              Aggregate every bank account, brokerage, and alternative asset into a single, unified performance dashboard.
+            </p>
+          </div>
+          <a href="#" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 hover:text-primary tracking-wider uppercase transition-colors">
+            See How It Works
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Feature 3: Savings Goals -->
+      <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col h-full group">
+        <div class="aspect-[4/3] w-full overflow-hidden relative">
+          <img src="savings_goals.png" alt="Savings Goals Dollar" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        </div>
+        <div class="p-8 flex flex-col justify-between flex-grow">
+          <div>
+            <h3 class="text-xl font-bold text-slate-900 mb-3 font-display flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M8.433 7.418C8.807 7.323 9.208 7.25 9.675 7.25c.996 0 1.7.4 2.1 1 .28.42.325.96.325 1.38v.22c0 .4-.025.86-.225 1.25-.4.8-1.2 1.15-2.2 1.15-.475 0-.875-.073-1.25-.168V7.418z" />
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.984c-.38-.073-.724-.216-.99-.413a1 1 0 10-1.2 1.6c.64.48 1.401.767 2.19.825V15a1 1 0 102 0v-.092c.677-.074 1.296-.289 1.776-.61.722-.48 1.324-1.256 1.324-2.298 0-1.042-.602-1.819-1.324-2.3-1.026-.684-2.025-.87-3.476-.97V7.25c.38.073.724.216.99.413a1 1 0 001.2-1.6 4.908 4.908 0 00-2.19-.825V5z" clip-rule="evenodd" />
+              </svg>
+              Savings Goals
+            </h3>
+            <p class="text-slate-500 text-sm leading-relaxed mb-6">
+              Automated milestone tracking with intelligent projections and personalized recommendations for optimal growth.
+            </p>
+          </div>
+          <a href="#" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 hover:text-primary tracking-wider uppercase transition-colors">
+            Start Planning
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonial Section -->
+<section class="py-24 px-6 bg-[#08111a] text-white relative overflow-hidden">
+  <!-- Subtle back glow -->
+  <div class="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+
+  <div class="relative max-w-6xl mx-auto grid lg:grid-cols-12 gap-16 items-center">
+    <!-- Testimonial text side -->
+    <div class="lg:col-span-7">
+      <span class="block text-xs font-bold text-primary uppercase tracking-widest mb-6">Institutional Trust</span>
+      <blockquote class="text-3xl md:text-4xl font-display leading-[1.3] font-medium mb-8">
+        "The precision of WealthSync's tracking capabilities has redefined how I manage complex portfolios. The clarity it provides is simply unmatched in the current fintech landscape."
+      </blockquote>
+      
+      <!-- Author card -->
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20">
+          <img src="sarah_jenkins.png" alt="Sarah Jenkins Avatar" class="w-full h-full object-cover" />
+        </div>
+        <div>
+          <span class="block font-bold text-white text-lg">Sarah Jenkins</span>
+          <span class="block text-slate-400 text-xs uppercase tracking-wider">Portfolio Manager, J.P. Sterling Partners</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Portrait Graphic Side -->
+    <div class="lg:col-span-5 relative w-full aspect-square md:w-[420px] mx-auto lg:w-auto">
+      <div class="absolute -inset-4 bg-primary/10 rounded-3xl blur-md"></div>
+      <div class="relative w-full h-full overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
+        <img src="sarah_jenkins.png" alt="Sarah Jenkins Portrait" class="w-full h-full object-cover" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Waitlist Section -->
+<section class="py-28 px-6 bg-slate-50 relative text-center">
+  <div class="max-w-2xl mx-auto">
+    <h2 class="text-4xl font-extrabold text-slate-900 mb-4 font-display">Secure Your Financial Future</h2>
+    <p class="text-slate-500 mb-8 max-w-lg mx-auto text-base leading-relaxed">
+      Join the private waitlist for institutional-grade wealth management tools. Access is currently limited to maintain service precision.
+    </p>
+
+    <!-- Waitlist Intake Form -->
+    <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-3 mb-10">
+      <input type="email" placeholder="professional@company.com" required class="flex-grow px-5 py-3.5 rounded-full border border-slate-200 bg-white text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-inner" />
+      <button type="submit" class="px-8 py-3.5 bg-slate-950 text-white font-semibold text-sm rounded-full hover:bg-slate-800 transition-colors shadow shadow-slate-950/10 active:scale-98">
+        Request Access
+      </button>
+    </form>
+
+    <!-- Security Trust Badges -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-10 text-slate-400 text-xs font-semibold tracking-widest">
+      <span class="flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M2.166 4.9C2.903 2.86 4.837 1.25 7.166 1.25c2.33 0 4.263 1.61 5 3.65h-10zm10 0c.737 2.04 2.67 3.65 5 3.65 2.33 0 4.263-1.61 5-3.65H12.166zM1.25 6c0 4.832 3.918 8.75 8.75 8.75s8.75-3.918 8.75-8.75H1.25zm16 2.5a1 1 0 11-2 0 1 1 0 012 0zm-8.5 3a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" clip-rule="evenodd" />
+        </svg>
+        AES-256 BANK-GRADE
+      </span>
+      <span class="flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M6.267 3.455a.75.75 0 00-.708-.523H4.56a.75.75 0 00-.75.75v12.636a.75.75 0 00.75.75h1.03a.75.75 0 00.707-.523L8.033 11.5H12a2.5 2.5 0 002.5-2.5V8A2.5 2.5 0 0012 5.5H8.033L6.267 3.455zM8.033 7l-1.8 2H12a1 1 0 011 1v1a1 1 0 01-1 1H7.233l1.8 2h3.934c.78 0 1.48-.487 1.764-1.213A4 4 0 0014 11V8a4 4 0 00-.07-1.213c-.283-.726-.983-1.213-1.764-1.213H8.033z" clip-rule="evenodd" />
+        </svg>
+        SOC2 TYPE II COMPLIANT
+      </span>
+      <span class="flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.061 3.29 9.355 7.882 10.844a1 1 0 00.236.037.994.994 0 00.236-.037C14.71 16.355 18 12.06 18 7c0-.681-.056-1.351-.166-2A11.952 11.952 0 0110 1.944zM10 15a1 1 0 100-2 1 1 0 000 2zm1-5a1 1 0 10-2 0v2a1 1 0 102 0v-2z" clip-rule="evenodd" />
+        </svg>
+        FINRA/SIPC PROTECTED
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- Site Footer -->
+<footer class="bg-white border-t border-slate-100 py-16 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-10 mb-16">
+      <!-- Footer brand identity -->
+      <div class="md:col-span-3">
+        <span class="block text-2xl font-extrabold text-slate-900 mb-4 font-display">WealthSync</span>
+        <p class="text-slate-400 text-sm max-w-sm leading-relaxed">
+          Precision tools for the sophisticated investor. Built for institutional performance, delivered to your desktop.
+        </p>
+      </div>
+
+      <!-- Links Grid Column 1 -->
+      <div>
+        <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Product</span>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#" class="text-slate-600 hover:text-primary transition-colors">Features</a></li>
+          <li><a href="#" class="text-slate-600 hover:text-primary transition-colors">Security</a></li>
+          <li><a href="#" class="text-slate-600 hover:text-primary transition-colors">Pricing</a></li>
+        </ul>
+      </div>
+
+      <!-- Links Grid Column 2 -->
+      <div>
+        <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Company</span>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#" class="text-slate-600 hover:text-primary transition-colors">About Us</a></li>
+          <li><a href="#" class="text-slate-600 hover:text-primary transition-colors">Insights</a></li>
+          <li><a href="#" class="text-slate-600 hover:text-primary transition-colors">Careers</a></li>
+        </ul>
+      </div>
+
+      <!-- Links Grid Column 3 -->
+      <div>
+        <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Legal</span>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#" class="text-slate-600 hover:text-primary transition-colors">Privacy Policy</a></li>
+          <li><a href="#" class="text-slate-600 hover:text-primary transition-colors">Terms of Service</a></li>
+          <li><a href="#" class="text-slate-600 hover:text-primary transition-colors">Cookie Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Footer Row -->
+    <div class="border-t border-slate-100 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <span class="text-slate-400 text-xs text-center md:text-left">
+        &copy; 2026 WealthSync Wealth Management. All rights reserved. Member FINRA/SIPC.
+      </span>
+
+      <!-- Social and Globe Icons -->
+      <div class="flex items-center gap-6 text-slate-400">
+        <!-- Globe -->
+        <a href="#" class="hover:text-primary transition-colors" aria-label="Globe">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.03 6.03 0 011.912-2.706C6.18 5.795 6.07 6.46 6.07 7.14a8.214 8.214 0 00.323 2.228 3.99 3.99 0 01-2.06-1.341zm1.636 5.068A6.03 6.03 0 014.07 10c0-.323.025-.64.074-.95a3.99 3.99 0 012.062 1.343c-.328.71-.532 1.488-.564 2.302zm1.636 1.706a6.03 6.03 0 01-1.364 1.364 8.044 8.044 0 001.364-.536v.828zm2.4-1.636c-.328.71-.532 1.488-.564 2.302v-.828c.328-.71.532-1.488.564-2.302zm1.636 1.706V14.86c.328.71.532 1.488.564 2.302a6.002 6.002 0 01-1.364.536v-.828zm2.4-1.636a6.03 6.03 0 01-1.364 1.364 8.044 8.044 0 001.364-.536v-.828zm1.636-1.706c.328-.71.532-1.488.564-2.302v.828c-.328.71-.532 1.488-.564 2.302zm.328-3.008a6.03 6.03 0 01-.074.95 3.99 3.99 0 01-2.062-1.343c.328-.71.532-1.488.564-2.302zm-1.96-3.364a6.002 6.002 0 011.364 1.364 8.044 8.044 0 00-1.364-.536V3.864z" clip-rule="evenodd" />
+          </svg>
+        </a>
+        <!-- Twitter/X -->
+        <a href="#" class="hover:text-primary transition-colors" aria-label="Twitter">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+        </a>
+        <!-- Favorite -->
+        <a href="#" class="hover:text-primary transition-colors" aria-label="Favorite">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
