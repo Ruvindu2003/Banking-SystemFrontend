@@ -56,6 +56,14 @@ video {
   height: 100%;
 }
 
+.home-bg-video {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  opacity: 0.68;
+  filter: brightness(0.92) saturate(1.12) contrast(1.06);
+  object-position: center center;
+}
+
 /* Device Mockup Frame */
 .aspect-video {
   aspect-ratio: 16 / 9;

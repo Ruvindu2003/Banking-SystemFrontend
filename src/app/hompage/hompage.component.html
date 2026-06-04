@@ -33,16 +33,23 @@
 <header class="relative overflow-hidden min-h-screen flex flex-col justify-between pt-32 pb-24 px-6 bg-slate-950 text-white">
   <!-- Full Screen Ambient Video Background -->
   <div class="absolute inset-0 z-0">
-    <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-35 filter brightness-75 contrast-125">
-      <!-- Local source if provided by user -->
-      <source src="banking-demo.mp4" type="video/mp4">
-      <!-- Premium stock finance animation loop fallback -->
-      <source src="https://assets.mixkit.co/videos/preview/mixkit-business-charts-and-data-on-a-screen-42521-large.mp4" type="video/mp4">
+    <video
+      #heroVideo
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="auto"
+      disablePictureInPicture
+      aria-hidden="true"
+      class="home-bg-video w-full h-full object-cover"
+    >
+      <source src="/cna_you_genrate_with_vedio_ban.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     <!-- Dark radial and linear gradients for text contrast and premium depth -->
-    <div class="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/70 to-[#08111a] pointer-events-none"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(8,17,26,0.85)_80%)] pointer-events-none"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-950/55 via-slate-950/40 to-[#08111a]/70 pointer-events-none"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_18%,rgba(8,17,26,0.55)_82%)] pointer-events-none"></div>
   </div>
 
   <div class="relative max-w-5xl mx-auto text-center z-10 my-auto">
@@ -122,7 +129,7 @@
       <!-- Mockup Frame -->
       <div class="relative bg-slate-900 p-4 rounded-[1.5rem] shadow-2xl border-4 border-slate-800">
         <div class="relative aspect-video rounded-lg overflow-hidden bg-slate-950">
-          <video autoplay loop muted playsinline class="w-full h-full object-cover">
+          <video autoplay loop muted playsinline preload="metadata" class="w-full h-full object-cover">
             <!-- Local source if provided by user -->
             <source src="banking-demo.mp4" type="video/mp4">
             <!-- Premium stock finance animation loop fallback -->
