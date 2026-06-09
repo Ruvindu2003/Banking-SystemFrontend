@@ -1,0 +1,13 @@
+/* Component-specific overrides for custom aesthetics */
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.font-display {
+  font-family: var(--font-display), sans-serif;
+}
+
+input:focus {
+  box-shadow: 0 0 15px rgba(13, 183, 107, 0.15), inset 0 0 5px rgba(13, 183, 107, 0.1);
+}

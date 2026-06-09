@@ -9,11 +9,12 @@ import {
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-hompage',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './hompage.component.html',
   styleUrls: ['./hompage.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -28,6 +29,9 @@ export class HompageComponent {
   }
 
   ngAfterViewInit(): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
     const video = this.heroVideo?.nativeElement;
 
     if (!video) {
