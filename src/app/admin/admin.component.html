@@ -1,0 +1,815 @@
+<div [ngClass]="'theme-' + currentTheme()" class="min-h-screen bg-slate-950 text-slate-100 font-sans pb-16 overflow-x-hidden relative">
+  <!-- Dynamic background overlay corresponding to selection theme -->
+  <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl pointer-events-none transition-all duration-1000"></div>
+  <div class="absolute bottom-10 left-10 w-[400px] h-[400px] bg-accent/5 rounded-full blur-3xl pointer-events-none transition-all duration-1000"></div>
+
+  <!-- Main container -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+    
+    <!-- Top Nav Header -->
+    <header class="flex flex-col md:flex-row md:items-center md:justify-between pb-8 mb-8 border-b border-white/5 gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <a routerLink="/" class="flex items-center gap-2 group">
+            <div class="w-7 h-7 rounded bg-primary flex items-center justify-center badge-glow transition-transform group-hover:scale-105">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+              </svg>
+            </div>
+            <span class="text-lg font-bold text-white font-display">WealthSync</span>
+          </a>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded bg-white/5 border border-white/10 text-slate-400 uppercase tracking-widest">
+            Control Room
+          </span>
+        </div>
+        <h1 class="text-3xl font-extrabold font-display tracking-tight text-white leading-tight">
+          Admin Command Center
+        </h1>
+        <p class="text-slate-400 text-xs mt-1">
+          Monitor institutional liquidity, modify user accounts, and customize the interface themes.
+        </p>
+      </div>
+
+      <!-- Quick Back link & Reset -->
+      <div class="flex items-center gap-3 self-start md:self-auto">
+        <button (click)="resetLayout()" class="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-xs font-semibold rounded-full transition-colors flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 110 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+          </svg>
+          Reset UI Defaults
+        </button>
+
+        <a routerLink="/" class="px-4 py-2 bg-primary text-slate-950 text-xs font-bold rounded-full hover:bg-primary-hover transition-all flex items-center gap-1 shadow-lg hover:shadow-primary/10">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          </svg>
+          Back to Site
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Workspace: Customizer Sidebar + Dashboard Panels -->
+    <div class="grid grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT COLUMN: Live Customizer Panel (Col-span 12 on mobile, 3 on large desktop) -->
+      <aside class="col-span-12 lg:col-span-3 space-y-6">
+        
+        <!-- CUSTOMIZATION BOX -->
+        <div [ngClass]="{
+          'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl': cardStyle() === 'glass',
+          'bg-slate-900 border border-slate-800 shadow-md': cardStyle() === 'flat',
+          'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)]': cardStyle() === 'neon'
+        }" class="p-5 rounded-2xl transition-all duration-300">
+          
+          <div class="border-b border-white/5 pb-3 mb-4 flex items-center justify-between">
+            <h2 class="text-sm font-extrabold uppercase tracking-widest text-white font-display">
+              Live Customizer
+            </h2>
+            <div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+          </div>
+
+          <!-- 1. Color Theme Presets -->
+          <div class="space-y-3 mb-6">
+            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              1. Color Theme Palette
+            </label>
+            <div class="grid grid-cols-2 gap-2">
+              <button 
+                (click)="setTheme('emerald')"
+                [ngClass]="currentTheme() === 'emerald' ? 'border-primary bg-primary/10 text-primary font-bold' : 'border-white/5 bg-white/2 hover:bg-white/5 text-slate-300'"
+                class="flex items-center gap-2 p-2 rounded-lg border text-xs text-left transition-all">
+                <span class="w-3.5 h-3.5 rounded bg-[#0db76b] block"></span>
+                Emerald
+              </button>
+              
+              <button 
+                (click)="setTheme('sapphire')"
+                [ngClass]="currentTheme() === 'sapphire' ? 'border-primary bg-primary/10 text-primary font-bold' : 'border-white/5 bg-white/2 hover:bg-white/5 text-slate-300'"
+                class="flex items-center gap-2 p-2 rounded-lg border text-xs text-left transition-all">
+                <span class="w-3.5 h-3.5 rounded bg-[#2563eb] block"></span>
+                Sapphire
+              </button>
+
+              <button 
+                (click)="setTheme('amethyst')"
+                [ngClass]="currentTheme() === 'amethyst' ? 'border-primary bg-primary/10 text-primary font-bold' : 'border-white/5 bg-white/2 hover:bg-white/5 text-slate-300'"
+                class="flex items-center gap-2 p-2 rounded-lg border text-xs text-left transition-all">
+                <span class="w-3.5 h-3.5 rounded bg-[#9333ea] block"></span>
+                Amethyst
+              </button>
+
+              <button 
+                (click)="setTheme('carbon')"
+                [ngClass]="currentTheme() === 'carbon' ? 'border-primary bg-primary/10 text-primary font-bold' : 'border-white/5 bg-white/2 hover:bg-white/5 text-slate-300'"
+                class="flex items-center gap-2 p-2 rounded-lg border text-xs text-left transition-all">
+                <span class="w-3.5 h-3.5 rounded bg-[#4b5563] block"></span>
+                Carbon
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. UI Styling Mode -->
+          <div class="space-y-3 mb-6">
+            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              2. Card Styling Mode
+            </label>
+            <div class="space-y-2">
+              <button 
+                (click)="setCardStyle('glass')"
+                [ngClass]="cardStyle() === 'glass' ? 'bg-primary text-slate-950 font-bold' : 'bg-white/5 hover:bg-white/10 text-slate-350'"
+                class="w-full py-2 px-3 text-left rounded-lg text-xs transition-all flex items-center justify-between">
+                <span>Glassmorphism (Premium)</span>
+                <span class="text-[10px] opacity-75">Blur bg</span>
+              </button>
+              
+              <button 
+                (click)="setCardStyle('flat')"
+                [ngClass]="cardStyle() === 'flat' ? 'bg-primary text-slate-950 font-bold' : 'bg-white/5 hover:bg-white/10 text-slate-350'"
+                class="w-full py-2 px-3 text-left rounded-lg text-xs transition-all flex items-center justify-between">
+                <span>Flat Minimalist</span>
+                <span class="text-[10px] opacity-75">Solid slate</span>
+              </button>
+
+              <button 
+                (click)="setCardStyle('neon')"
+                [ngClass]="cardStyle() === 'neon' ? 'bg-primary text-slate-950 font-bold' : 'bg-white/5 hover:bg-white/10 text-slate-350'"
+                class="w-full py-2 px-3 text-left rounded-lg text-xs transition-all flex items-center justify-between">
+                <span>Cyberpunk Neon</span>
+                <span class="text-[10px] opacity-75">Glowing borders</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. Widget Visibility Configuration -->
+          <div class="space-y-3 mb-6">
+            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              3. Dashboard Layout Grid
+            </label>
+            <div class="space-y-2.5">
+              <label class="flex items-center text-xs text-slate-300 cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  [checked]="showStats()" 
+                  (change)="toggleWidget('stats')"
+                  class="rounded bg-slate-800 border-white/10 text-primary focus:ring-primary w-4 h-4 mr-2.5" />
+                Show Capital Overview (Cards)
+              </label>
+
+              <label class="flex items-center text-xs text-slate-300 cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  [checked]="showChart()" 
+                  (change)="toggleWidget('chart')"
+                  class="rounded bg-slate-800 border-white/10 text-primary focus:ring-primary w-4 h-4 mr-2.5" />
+                Show Liquidity Charts
+              </label>
+
+              <label class="flex items-center text-xs text-slate-300 cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  [checked]="showUsers()" 
+                  (change)="toggleWidget('users')"
+                  class="rounded bg-slate-800 border-white/10 text-primary focus:ring-primary w-4 h-4 mr-2.5" />
+                Show Client Directory Table
+              </label>
+
+              <label class="flex items-center text-xs text-slate-300 cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  [checked]="showSimulator()" 
+                  (change)="toggleWidget('simulator')"
+                  class="rounded bg-slate-800 border-white/10 text-primary focus:ring-primary w-4 h-4 mr-2.5" />
+                Show Transaction Simulator
+              </label>
+
+              <label class="flex items-center text-xs text-slate-300 cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  [checked]="showLogs()" 
+                  (change)="toggleWidget('logs')"
+                  class="rounded bg-slate-800 border-white/10 text-primary focus:ring-primary w-4 h-4 mr-2.5" />
+                Show Activity Audit Logs
+              </label>
+            </div>
+          </div>
+
+          <!-- 4. Global Settings (Security simulation) -->
+          <div class="space-y-3 pt-4 border-t border-white/5">
+            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              4. System Safety Switches
+            </label>
+            
+            <div class="flex items-center justify-between text-xs text-slate-300">
+              <span class="flex items-center gap-1.5">
+                <span [ngClass]="maintenanceMode() ? 'bg-red-500 animate-ping' : 'bg-slate-500'" class="w-1.5 h-1.5 rounded-full inline-block"></span>
+                Maintenance Mode
+              </span>
+              <button 
+                (click)="maintenanceMode.set(!maintenanceMode())"
+                [ngClass]="maintenanceMode() ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'bg-slate-800 border-white/5 text-slate-400'"
+                class="px-2.5 py-1 text-[10px] font-bold rounded-md border transition-all">
+                {{ maintenanceMode() ? 'ON' : 'OFF' }}
+              </button>
+            </div>
+
+            <div class="flex items-center justify-between text-xs text-slate-300">
+              <span>Enforce SOC2 MFA</span>
+              <button 
+                (click)="mfaEnforced.set(!mfaEnforced())"
+                [ngClass]="mfaEnforced() ? 'bg-primary/20 text-primary border-primary/30' : 'bg-slate-800 border-white/5 text-slate-400'"
+                class="px-2.5 py-1 text-[10px] font-bold rounded-md border transition-all">
+                {{ mfaEnforced() ? 'ENFORCED' : 'BYPASS' }}
+              </button>
+            </div>
+
+            <div class="flex items-center justify-between text-xs text-slate-300">
+              <span>Flag Capital Moves (>= $100k)</span>
+              <button 
+                (click)="flagHighTransactions.set(!flagHighTransactions())"
+                [ngClass]="flagHighTransactions() ? 'bg-primary/20 text-primary border-primary/30' : 'bg-slate-800 border-white/5 text-slate-400'"
+                class="px-2.5 py-1 text-[10px] font-bold rounded-md border transition-all">
+                {{ flagHighTransactions() ? 'ACTIVE' : 'IGNORE' }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- INFO WIDGET -->
+        <div class="p-4 bg-slate-900/40 border border-white/5 rounded-2xl text-[10px] text-slate-400 space-y-1">
+          <span class="font-bold text-slate-300 block uppercase tracking-wider">Local Storage State</span>
+          <p>Theme configuration and widget visibilities are bound to localStorage. Refreshing keeps your customized workspace.</p>
+        </div>
+      </aside>
+
+      <!-- RIGHT COLUMN: Customizable Dashboard Grid (Col-span 12 on mobile, 9 on desktop) -->
+      <main class="col-span-12 lg:col-span-9 space-y-8">
+        
+        <!-- Maintenance Banner Alert (If toggled) -->
+        <div *ngIf="maintenanceMode()" class="p-4 bg-red-950/40 border border-red-500/25 rounded-2xl text-red-200 text-xs leading-relaxed flex items-center gap-3 animate-pulse">
+          <span class="flex h-2.5 w-2.5 relative">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+          </span>
+          <div>
+            <span class="font-bold">SYSTEM MAINTENANCE ENFORCED.</span> Simulation deposits & transactions are currently frozen.
+          </div>
+        </div>
+
+        <!-- 1. STATS OVERVIEW CARDS -->
+        <section *ngIf="showStats()" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Card: Total Assets -->
+          <div [ngClass]="{
+            'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl': cardStyle() === 'glass',
+            'bg-slate-900 border border-slate-800': cardStyle() === 'flat',
+            'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)]': cardStyle() === 'neon'
+          }" class="p-5 rounded-2xl relative overflow-hidden group">
+            <div class="absolute -right-6 -bottom-6 text-primary/5 group-hover:scale-110 transition-transform duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M8.433 7.418C8.807 7.323 9.208 7.25 9.675 7.25c.996 0 1.7.4 2.1 1 .28.42.325.96.325 1.38v.22c0 .4-.025.86-.225 1.25-.4.8-1.2 1.15-2.2 1.15-.475 0-.875-.073-1.25-.168V7.418z" />
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.984c-.38-.073-.724-.216-.99-.413a1 1 0 10-1.2 1.6c.64.48 1.401.767 2.19.825V15a1 1 0 102 0v-.092c.677-.074 1.296-.289 1.776-.61.722-.48 1.324-1.256 1.324-2.298 0-1.042-.602-1.819-1.324-2.3-1.026-.684-2.025-.87-3.476-.97V7.25c.38.073.724.216.99.413a1 1 0 001.2-1.6 4.908 4.908 0 00-2.19-.825V5z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Total Liquid Assets</span>
+            <span class="block text-2xl font-extrabold font-display text-white">${{ totalAssets() | number:'1.2-2' }}</span>
+            <span class="text-[10px] text-primary font-bold mt-1.5 flex items-center gap-0.5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+              </svg>
+              +6.4% from last audit
+            </span>
+          </div>
+
+          <!-- Card: Avg Client Balance -->
+          <div [ngClass]="{
+            'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl': cardStyle() === 'glass',
+            'bg-slate-900 border border-slate-800': cardStyle() === 'flat',
+            'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)]': cardStyle() === 'neon'
+          }" class="p-5 rounded-2xl relative overflow-hidden group">
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Avg Client Portfolio</span>
+            <span class="block text-2xl font-extrabold font-display text-white">${{ avgBalance() | number:'1.2-2' }}</span>
+            <span class="text-[10px] text-slate-400 font-semibold mt-1.5 block">Across {{ users().length }} clients</span>
+          </div>
+
+          <!-- Card: Active Client Count -->
+          <div [ngClass]="{
+            'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl': cardStyle() === 'glass',
+            'bg-slate-900 border border-slate-800': cardStyle() === 'flat',
+            'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)]': cardStyle() === 'neon'
+          }" class="p-5 rounded-2xl relative overflow-hidden group">
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Active Portals</span>
+            <span class="block text-2xl font-extrabold font-display text-white">{{ activeUsersCount() }} Clients</span>
+            <span class="text-[10px] text-primary font-bold mt-1.5 flex items-center gap-0.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+              All secure & active
+            </span>
+          </div>
+
+          <!-- Card: Flagged / Suspended -->
+          <div [ngClass]="{
+            'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl': cardStyle() === 'glass',
+            'bg-slate-900 border border-slate-800': cardStyle() === 'flat',
+            'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)]': cardStyle() === 'neon'
+          }" class="p-5 rounded-2xl relative overflow-hidden group">
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Security Flagged</span>
+            <span class="block text-2xl font-extrabold font-display text-white">{{ flaggedUsersCount() }} Accounts</span>
+            <span class="text-[10px] text-accent font-bold mt-1.5 flex items-center gap-0.5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+              </svg>
+              Requires visual verification
+            </span>
+          </div>
+        </section>
+
+        <!-- 2. ANALYTICAL CHARTS (DYNAMIC VECTOR SVG GRAPHICS) -->
+        <section *ngIf="showChart()" [ngClass]="{
+          'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl': cardStyle() === 'glass',
+          'bg-slate-900 border border-slate-800': cardStyle() === 'flat',
+          'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)]': cardStyle() === 'neon'
+        }" class="p-6 rounded-2xl transition-all duration-300">
+          
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-white/5 pb-4 mb-6 gap-2">
+            <div>
+              <h2 class="text-base font-bold font-display text-white">
+                Liquidity Trend Curve
+              </h2>
+              <p class="text-xs text-slate-400">Mock metrics of liquid assets over the last 6 months.</p>
+            </div>
+            
+            <div class="flex items-center gap-4 text-xs">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-primary rounded"></span> Liquidity Assets</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-accent rounded"></span> Threshold Flag</span>
+            </div>
+          </div>
+
+          <!-- Dynamic SVG Chart area -->
+          <div class="h-48 sm:h-64 w-full">
+            <svg viewBox="0 0 1000 300" class="w-full h-full overflow-visible">
+              <defs>
+                <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="var(--color-primary-val, #0db76b)" stop-opacity="0.3"/>
+                  <stop offset="100%" stop-color="var(--color-primary-val, #0db76b)" stop-opacity="0.0"/>
+                </linearGradient>
+              </defs>
+              
+              <!-- Grid lines -->
+              <line x1="50" y1="50" x2="950" y2="50" stroke="rgba(255,255,255,0.03)" stroke-width="1.5" />
+              <line x1="50" y1="125" x2="950" y2="125" stroke="rgba(255,255,255,0.03)" stroke-width="1.5" />
+              <line x1="50" y1="200" x2="950" y2="200" stroke="rgba(255,255,255,0.03)" stroke-width="1.5" />
+              <line x1="50" y1="275" x2="950" y2="275" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" />
+
+              <!-- Security Threshold Line -->
+              <line *ngIf="flagHighTransactions()" x1="50" y1="100" x2="950" y2="100" stroke="#facc15" stroke-width="1.5" stroke-dasharray="4,4" class="opacity-50" />
+
+              <!-- Area Fill -->
+              <path d="M 50 275 L 50 220 Q 200 180 350 230 T 650 140 T 800 110 T 950 60 L 950 275 Z" fill="url(#chartGradient)" />
+
+              <!-- Curve Path -->
+              <path d="M 50 220 Q 200 180 350 230 T 650 140 T 800 110 T 950 60" fill="none" stroke="var(--color-primary-val, #0db76b)" stroke-width="3.5" stroke-linecap="round" />
+
+              <!-- Data Point nodes -->
+              <circle cx="50" cy="220" r="5" fill="#030712" stroke="var(--color-primary-val, #0db76b)" stroke-width="2" />
+              <circle cx="200" cy="195" r="5" fill="#030712" stroke="var(--color-primary-val, #0db76b)" stroke-width="2" />
+              <circle cx="350" cy="230" r="5" fill="#030712" stroke="var(--color-primary-val, #0db76b)" stroke-width="2" />
+              <circle cx="500" cy="170" r="5" fill="#030712" stroke="var(--color-primary-val, #0db76b)" stroke-width="2" />
+              <circle cx="650" cy="140" r="5" fill="#030712" stroke="var(--color-primary-val, #0db76b)" stroke-width="2" />
+              <circle cx="800" cy="110" r="5" fill="#030712" stroke="var(--color-primary-val, #0db76b)" stroke-width="2" />
+              <circle cx="950" cy="60" r="6" fill="var(--color-accent-val, #facc15)" stroke="var(--color-primary-val, #0db76b)" stroke-width="2.5" />
+
+              <!-- X-Axis Labels -->
+              <text x="50" y="295" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="middle">Jan 26</text>
+              <text x="230" y="295" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="middle">Feb 26</text>
+              <text x="410" y="295" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="middle">Mar 26</text>
+              <text x="590" y="295" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="middle">Apr 26</text>
+              <text x="770" y="295" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="middle">May 26</text>
+              <text x="950" y="295" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="middle">Jun 26</text>
+            </svg>
+          </div>
+        </section>
+
+        <!-- 3. CLIENT MANAGEMENT SECTION -->
+        <section *ngIf="showUsers()" [ngClass]="{
+          'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl': cardStyle() === 'glass',
+          'bg-slate-900 border border-slate-800': cardStyle() === 'flat',
+          'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)]': cardStyle() === 'neon'
+        }" class="p-6 rounded-2xl transition-all duration-300">
+          
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-white/5 pb-5 mb-6 gap-4">
+            <div>
+              <h2 class="text-base font-bold font-display text-white">Client Portfolio Directory</h2>
+              <p class="text-xs text-slate-400">Search system users, update access policies, and configure bank assets.</p>
+            </div>
+            
+            <button 
+              (click)="openAddUserModal()"
+              class="bg-primary text-slate-950 text-xs font-bold px-4 py-2 rounded-full hover:bg-primary-hover transition-all flex items-center gap-1 shadow hover:shadow-primary/10">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+              </svg>
+              Add Client Portal
+            </button>
+          </div>
+
+          <!-- Filters Bar -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <!-- Search -->
+            <div class="relative sm:col-span-2">
+              <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-450">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                </svg>
+              </span>
+              <input 
+                type="text"
+                [value]="searchQuery()"
+                (input)="searchQuery.set($any($event.target).value)"
+                placeholder="Search clients by ID, name, email..."
+                class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 pl-10 pr-4 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all shadow-inner" />
+            </div>
+
+            <!-- Filter Dropdown -->
+            <div>
+              <select 
+                [value]="statusFilter()" 
+                (change)="statusFilter.set($any($event.target).value)"
+                class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all">
+                <option value="all">All Access Statuses</option>
+                <option value="Active">Active Portals</option>
+                <option value="Flagged">Flagged Alert Status</option>
+                <option value="Suspended">Suspended Access</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Table Container -->
+          <div class="overflow-x-auto border border-white/5 rounded-xl bg-slate-950/20">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-white/2 border-b border-white/5 text-slate-450 uppercase tracking-widest text-[9px] font-bold">
+                  <th class="py-3 px-4">Client ID</th>
+                  <th class="py-3 px-4">Full Name</th>
+                  <th class="py-3 px-4">Contact Info</th>
+                  <th class="py-3 px-4">Role</th>
+                  <th class="py-3 px-4 text-right">Portfolio Balance</th>
+                  <th class="py-3 px-4 text-center">Status</th>
+                  <th class="py-3 px-4 text-right">Control Adjustments</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5 text-slate-300">
+                <tr *ngFor="let user of filteredUsers()" class="hover:bg-white/2 transition-colors">
+                  <td class="py-3.5 px-4 font-mono text-slate-450 font-bold">{{ user.id }}</td>
+                  <td class="py-3.5 px-4 font-semibold text-white">{{ user.name }}</td>
+                  <td class="py-3.5 px-4 text-slate-450 text-[11px]">{{ user.email }}</td>
+                  <td class="py-3.5 px-4">
+                    <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-900 border border-white/5 text-slate-350">
+                      {{ user.role }}
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 text-right font-bold text-white font-mono">
+                    ${{ user.balance | number:'1.2-2' }}
+                  </td>
+                  <td class="py-3.5 px-4 text-center">
+                    <span [ngClass]="{
+                      'bg-primary/10 border border-primary/20 text-primary': user.status === 'Active',
+                      'bg-red-500/10 border border-red-500/20 text-red-400': user.status === 'Suspended',
+                      'bg-accent/10 border border-accent/20 text-accent': user.status === 'Flagged'
+                    }" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold">
+                      {{ user.status }}
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 text-right">
+                    <div class="flex items-center justify-end gap-1.5">
+                      <!-- Balance Modifiers -->
+                      <button 
+                        (click)="adjustBalance(user.id, 10000)" 
+                        title="Add $10k"
+                        class="p-1 hover:bg-primary/10 text-primary border border-primary/10 hover:border-primary/30 rounded transition-colors text-[10px] font-semibold">
+                        +$10k
+                      </button>
+                      <button 
+                        (click)="adjustBalance(user.id, -5000)" 
+                        title="Deduct $5k"
+                        class="p-1 hover:bg-red-550/10 text-red-400 border border-red-500/10 hover:border-red-500/30 rounded transition-colors text-[10px] font-semibold">
+                        -$5k
+                      </button>
+
+                      <!-- Change Status inline toggle -->
+                      <button 
+                        *ngIf="user.status !== 'Active'" 
+                        (click)="changeUserStatus(user.id, 'Active')"
+                        class="px-2 py-1 bg-primary/10 border border-primary/20 hover:bg-primary/25 rounded text-[10px] text-primary font-bold transition-all">
+                        Activate
+                      </button>
+                      
+                      <button 
+                        *ngIf="user.status === 'Active'" 
+                        (click)="changeUserStatus(user.id, 'Flagged')"
+                        class="px-2 py-1 bg-accent/10 border border-accent/20 hover:bg-accent/25 rounded text-[10px] text-accent font-bold transition-all">
+                        Flag
+                      </button>
+
+                      <!-- Liquidate/Delete -->
+                      <button 
+                        (click)="deleteUser(user.id)"
+                        title="Liquidate & Delete"
+                        class="p-1 bg-red-950/20 border border-red-900/30 text-red-500 hover:bg-red-500 hover:text-slate-950 rounded transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Empty state -->
+                <tr *ngIf="filteredUsers().length === 0">
+                  <td colspan="7" class="py-8 text-center text-slate-500">
+                    No clients found matching the query details.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 4. TRANSACTION SIMULATOR & ACTIVITY LOGS (TWO COLUMN GROUP) -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+          
+          <!-- Widget: Transaction Simulator -->
+          <section *ngIf="showSimulator()" [ngClass]="{
+            'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl col-span-12 md:col-span-5': cardStyle() === 'glass',
+            'bg-slate-900 border border-slate-800 col-span-12 md:col-span-5': cardStyle() === 'flat',
+            'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)] col-span-12 md:col-span-5': cardStyle() === 'neon'
+          }" class="p-6 rounded-2xl transition-all duration-300">
+            
+            <div class="border-b border-white/5 pb-3 mb-5">
+              <h2 class="text-sm font-bold uppercase tracking-widest text-white font-display">
+                Real-time Transaction Simulator
+              </h2>
+              <p class="text-[10px] text-slate-400">Trigger transactions instantly to test security rules.</p>
+            </div>
+
+            <form [formGroup]="simForm" (ngSubmit)="onSimulateSubmit()" class="space-y-4">
+              <!-- Select Client -->
+              <div class="space-y-1.5">
+                <label for="simUser" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Select Portfolio Owner</label>
+                <select 
+                  id="simUser"
+                  formControlName="userId"
+                  class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all">
+                  <option value="">-- Choose Account --</option>
+                  <option *ngFor="let user of users()" [value]="user.id">
+                    {{ user.name }} ({{ user.id }}) - Bal: ${{ user.balance | number:'1.0-0' }}
+                  </option>
+                </select>
+                <div *ngIf="simForm.get('userId')?.touched && simForm.get('userId')?.invalid" class="text-[10px] text-red-400">
+                  Account selection is required.
+                </div>
+              </div>
+
+              <!-- Transaction Type -->
+              <div class="space-y-1.5">
+                <label for="simType" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Transaction Type</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <button 
+                    type="button"
+                    (click)="simForm.get('type')?.setValue('Deposit')"
+                    [ngClass]="simForm.get('type')?.value === 'Deposit' ? 'bg-primary text-slate-950 font-bold border-primary' : 'bg-slate-950 border-white/10 text-slate-300'"
+                    class="py-2 rounded-xl border text-xs text-center transition-all">
+                    Deposit (+)
+                  </button>
+                  <button 
+                    type="button"
+                    (click)="simForm.get('type')?.setValue('Withdrawal')"
+                    [ngClass]="simForm.get('type')?.value === 'Withdrawal' ? 'bg-primary text-slate-950 font-bold border-primary' : 'bg-slate-950 border-white/10 text-slate-300'"
+                    class="py-2 rounded-xl border text-xs text-center transition-all">
+                    Withdrawal (-)
+                  </button>
+                </div>
+              </div>
+
+              <!-- Simulation Amount -->
+              <div class="space-y-1.5">
+                <label for="simAmount" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Transaction Value ($ USD)</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-xs">$</span>
+                  <input 
+                    id="simAmount"
+                    type="number"
+                    formControlName="amount"
+                    placeholder="12,500"
+                    class="w-full bg-slate-950 border border-white/10 rounded-xl py-2.5 pl-8 pr-4 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all shadow-inner" />
+                </div>
+                <div *ngIf="simForm.get('amount')?.touched && simForm.get('amount')?.invalid" class="text-[10px] text-red-400">
+                  Value must be at least $1.
+                </div>
+              </div>
+
+              <!-- Fire Simulator button -->
+              <button 
+                type="submit"
+                [disabled]="maintenanceMode()"
+                class="w-full py-3 bg-primary text-slate-950 font-bold text-xs rounded-xl hover:bg-primary-hover shadow-lg hover:shadow-primary/20 hover:scale-[1.01] transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" />
+                </svg>
+                Post Transaction
+              </button>
+            </form>
+          </section>
+
+          <!-- Widget: Audit Activity Logs -->
+          <section *ngIf="showLogs()" [ngClass]="{
+            'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl col-span-12 md:col-span-7': cardStyle() === 'glass',
+            'bg-slate-900 border border-slate-800 col-span-12 md:col-span-7': cardStyle() === 'flat',
+            'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)] col-span-12 md:col-span-7': cardStyle() === 'neon'
+          }" class="p-6 rounded-2xl transition-all duration-300">
+            
+            <div class="border-b border-white/5 pb-3 mb-5 flex items-center justify-between">
+              <div>
+                <h2 class="text-sm font-bold uppercase tracking-widest text-white font-display">
+                  Live Audit Security Logs
+                </h2>
+                <p class="text-[10px] text-slate-400">Continuous feed of account activities and manual settings overrides.</p>
+              </div>
+              
+              <span class="flex items-center gap-1 text-[10px] text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-full font-bold">
+                <span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span> Live feed
+              </span>
+            </div>
+
+            <!-- Feed list -->
+            <div class="space-y-3 max-h-72 overflow-y-auto pr-1">
+              <div *ngFor="let log of transactions()" class="p-3 bg-slate-950/45 border border-white/5 rounded-xl text-xs flex items-start gap-3 justify-between">
+                <div class="flex gap-2">
+                  <!-- Log Icons -->
+                  <div [ngClass]="{
+                    'bg-primary/10 text-primary border-primary/20': log.status === 'Complete',
+                    'bg-red-500/10 text-red-400 border-red-500/20': log.status === 'Failed',
+                    'bg-accent/10 text-accent border-accent/20': log.status === 'Blocked'
+                  }" class="w-7 h-7 rounded-lg border flex items-center justify-center shrink-0 mt-0.5">
+                    <svg *ngIf="log.status === 'Complete'" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    <svg *ngIf="log.status === 'Failed'" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                    </svg>
+                    <svg *ngIf="log.status === 'Blocked'" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+
+                  <div>
+                    <span class="block text-slate-200 font-semibold">{{ log.userName }} ({{ log.userId }})</span>
+                    <span class="text-[10px] text-slate-450">{{ log.type }} of <strong class="text-white">${{ log.amount | number:'1.0-0' }}</strong> - {{ log.status }}</span>
+                  </div>
+                </div>
+
+                <div class="text-right text-[10px] text-slate-450">
+                  <span class="block font-mono text-[9px]">{{ log.id }}</span>
+                  <span>{{ log.timestamp | date:'shortTime' }}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- FIXED FLOATING TOAST NOTIFICATIONS WRAPPER -->
+  <div class="fixed bottom-5 right-5 z-55 w-80 space-y-2 pointer-events-none">
+    <div 
+      *ngFor="let toast of toasts()" 
+      [ngClass]="{
+        'bg-green-500/20 border-green-500/40 text-green-400': toast.type === 'success',
+        'bg-blue-500/20 border-blue-500/40 text-blue-400': toast.type === 'info',
+        'bg-red-500/20 border-red-500/40 text-red-400': toast.type === 'error',
+        'bg-yellow-500/20 border-yellow-500/40 text-yellow-400': toast.type === 'warning'
+      }" 
+      class="p-4 rounded-xl border backdrop-blur-md shadow-lg pointer-events-auto flex items-start gap-2.5 text-xs animate-slide-in justify-between">
+      <div class="flex items-start gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mt-0.5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+        <span>{{ toast.message }}</span>
+      </div>
+      <button (click)="removeToast(toast.id)" class="text-slate-400 hover:text-white shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- DIALOG MODAL: ADD CLIENT PORTAL (WITH BACKDROP BLUR) -->
+  <div *ngIf="isAddUserModalOpen()" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+    <div [ngClass]="{
+      'bg-slate-900 border border-slate-800': cardStyle() === 'flat',
+      'bg-[#0b131c] border border-white/10 shadow-2xl': cardStyle() !== 'flat'
+    }" class="w-full max-w-md rounded-2xl p-6 relative">
+      
+      <div class="flex items-center justify-between border-b border-white/5 pb-3 mb-5">
+        <h3 class="text-base font-bold text-white font-display">Create Client Access Portal</h3>
+        <button (click)="closeAddUserModal()" class="text-slate-400 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      <form [formGroup]="userForm" (ngSubmit)="onAddUserSubmit()" class="space-y-4">
+        <!-- Client Name -->
+        <div class="space-y-1">
+          <label for="usrName" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Client Full Name</label>
+          <input 
+            id="usrName"
+            type="text"
+            formControlName="name"
+            placeholder="Sarah Jenkins"
+            class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all" />
+          <div *ngIf="userForm.get('name')?.touched && userForm.get('name')?.invalid" class="text-[10px] text-red-400">
+            Full name is required.
+          </div>
+        </div>
+
+        <!-- Email Address -->
+        <div class="space-y-1">
+          <label for="usrEmail" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Secure Email Address</label>
+          <input 
+            id="usrEmail"
+            type="email"
+            formControlName="email"
+            placeholder="jenkins@company.com"
+            class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all" />
+          <div *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid" class="text-[10px] text-red-400">
+            Please enter a valid email address.
+          </div>
+        </div>
+
+        <!-- Initial Assets -->
+        <div class="space-y-1">
+          <label for="usrBalance" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Initial Asset Deposit ($ USD)</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-xs">$</span>
+            <input 
+              id="usrBalance"
+              type="number"
+              formControlName="balance"
+              placeholder="500,000"
+              class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 pl-7 pr-3.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all" />
+          </div>
+          <div *ngIf="userForm.get('balance')?.touched && userForm.get('balance')?.invalid" class="text-[10px] text-red-400">
+            Deposit amount must be a positive value.
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Role selection -->
+          <div class="space-y-1">
+            <label for="usrRole" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Portal Access Role</label>
+            <select 
+              id="usrRole"
+              formControlName="role"
+              class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all">
+              <option value="Premium Client">Premium Client</option>
+              <option value="Standard Client">Standard Client</option>
+              <option value="Wealth Manager">Wealth Manager</option>
+              <option value="Super Admin">Super Admin</option>
+            </select>
+          </div>
+
+          <!-- Status selection -->
+          <div class="space-y-1">
+            <label for="usrStatus" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Initial Status</label>
+            <select 
+              id="usrStatus"
+              formControlName="status"
+              class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all">
+              <option value="Active">Active</option>
+              <option value="Flagged">Flagged</option>
+              <option value="Suspended">Suspended</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/5 mt-5">
+          <button 
+            type="button" 
+            (click)="closeAddUserModal()"
+            class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors">
+            Cancel
+          </button>
+          
+          <button 
+            type="submit"
+            class="bg-primary text-slate-950 text-xs font-bold px-5 py-2.5 rounded-full hover:bg-primary-hover shadow hover:shadow-primary/10 transition-all">
+            Deploy Account
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
