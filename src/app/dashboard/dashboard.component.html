@@ -1,0 +1,417 @@
+<div class="min-h-screen bg-slate-950 text-slate-100 font-sans pb-16 overflow-x-hidden relative">
+  <!-- Glowing ambient lights -->
+  <div class="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-accent/5 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+    
+    <!-- Header Area -->
+    <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-8 mb-8 border-b border-white/5 gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <a routerLink="/" class="flex items-center gap-2 group">
+            <div class="w-7 h-7 rounded bg-primary flex items-center justify-center badge-glow transition-transform group-hover:scale-105">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+              </svg>
+            </div>
+            <span class="text-lg font-bold text-white font-display">WealthSync</span>
+          </a>
+          <!-- Membership Badge -->
+          <span [ngClass]="userRole() === 'Premium Client' ? 'bg-amber-500/10 border-amber-500/20 text-amber-400' : 'bg-slate-900 border-white/10 text-slate-400'" class="text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-widest flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+            {{ userRole() }}
+          </span>
+        </div>
+        
+        <h1 class="text-3xl font-extrabold font-display tracking-tight text-white leading-tight">
+          Welcome back, <span class="text-primary text-glow">{{ userName() }}</span>
+        </h1>
+        <p class="text-slate-400 text-xs mt-1">
+          Secured Account ID: <span class="font-mono text-white">{{ accountNumber() }}</span> | Standard AES-256 Banking Protection Active.
+        </p>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="flex items-center gap-3">
+        <a routerLink="/admin" class="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-xs font-semibold rounded-full transition-colors flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          System Control
+        </a>
+
+        <button (click)="onLogout()" class="px-4 py-2 bg-red-950/20 border border-red-500/20 hover:bg-red-500 hover:text-slate-950 text-xs font-bold rounded-full transition-all flex items-center gap-1 cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+          </svg>
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT COLUMN: Card Graphic & Quick Actions (Col-span 12 on mobile, 4 on desktop) -->
+      <aside class="col-span-12 lg:col-span-4 space-y-6">
+        
+        <!-- GLOWING PREMIUM CREDIT CARD MOCKUP -->
+        <div class="relative w-full h-56 rounded-3xl bg-gradient-to-tr from-slate-900 to-slate-950 border border-white/10 p-6 flex flex-col justify-between overflow-hidden shadow-2xl group select-none">
+          <!-- Ambient card glows -->
+          <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-2xl group-hover:bg-primary/35 transition-all duration-700"></div>
+          <div class="absolute -bottom-10 -left-10 w-28 h-28 bg-accent/10 rounded-full blur-2xl"></div>
+
+          <!-- Top row -->
+          <div class="flex items-center justify-between z-10">
+            <div>
+              <span class="block text-[8px] tracking-wider text-slate-400 font-bold uppercase leading-none">WealthSync Vault</span>
+              <span class="block text-xs font-bold text-white font-display mt-0.5">Black Signature</span>
+            </div>
+            
+            <div class="w-7 h-7 rounded bg-white/5 border border-white/10 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Middle Card Chip -->
+          <div class="w-10 h-7 rounded bg-gradient-to-tr from-amber-500/30 to-amber-400/80 border border-amber-500/20 shadow-inner z-10 shrink-0"></div>
+
+          <!-- Card Numbers -->
+          <div class="z-10 mt-1">
+            <span class="font-mono text-base tracking-widest text-white leading-none">••••  ••••  ••••  8820</span>
+          </div>
+
+          <!-- Bottom card metadata -->
+          <div class="flex items-center justify-between z-10 border-t border-white/5 pt-3">
+            <div>
+              <span class="block text-[7px] text-slate-500 font-bold uppercase leading-none">CARDHOLDER</span>
+              <span class="block text-xs font-semibold text-slate-200 uppercase mt-0.5 truncate max-w-[150px]">{{ userName() }}</span>
+            </div>
+            <div class="text-right">
+              <span class="block text-[7px] text-slate-500 font-bold uppercase leading-none">EXPIRES</span>
+              <span class="block text-xs font-semibold text-slate-200 mt-0.5">09/29</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK FINANCIAL DIRECTORIES (Send Money Widget) -->
+        <div class="p-5 bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl shadow-xl space-y-4">
+          <div class="border-b border-white/5 pb-2.5">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-white">Transfer Liquidity</h3>
+            <p class="text-[10px] text-slate-400">Instantly execute a secure transfer to local accounts.</p>
+          </div>
+
+          <!-- Quick transfer buttons -->
+          <div class="grid grid-cols-2 gap-3">
+            <button 
+              (click)="openTransferModal()"
+              class="py-2.5 bg-primary text-slate-950 text-xs font-bold rounded-xl hover:bg-primary-hover shadow hover:shadow-primary/10 transition-all flex items-center justify-center gap-1 cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707L6 18.414V5.586L3.707 3.293zM17.707 5.293L14 1.586v12.828l2.293 2.293A1 1 0 0018 16V6a1 1 0 00-.293-.707z" clip-rule="evenodd" />
+              </svg>
+              Send Capital
+            </button>
+            
+            <button 
+              (click)="openGoalModal()"
+              class="py-2.5 bg-white/5 hover:bg-white/10 text-xs font-semibold rounded-xl transition-all border border-white/10 flex items-center justify-center gap-1 cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.984c-.38-.073-.724-.216-.99-.413a1 1 0 10-1.2 1.6c.64.48 1.401.767 2.19.825V15a1 1 0 102 0v-.092c.677-.074 1.296-.289 1.776-.61.722-.48 1.324-1.256 1.324-2.298 0-1.042-.602-1.819-1.324-2.3-1.026-.684-2.025-.87-3.476-.97V7.25c.38.073.724.216.99.413a1 1 0 001.2-1.6 4.908 4.908 0 00-2.19-.825V5z" clip-rule="evenodd" />
+              </svg>
+              Credit Goal
+            </button>
+          </div>
+        </div>
+
+        <!-- ACTIVE SAVINGS MILESTONES -->
+        <div class="p-5 bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl shadow-xl space-y-4">
+          <div class="border-b border-white/5 pb-2.5 flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-bold uppercase tracking-wider text-white">Savings Targets</h3>
+              <p class="text-[10px] text-slate-400">Track and allocate funds for automated goals.</p>
+            </div>
+            
+            <button (click)="openGoalModal()" class="text-primary hover:underline text-xs font-semibold">
+              Credit Goal
+            </button>
+          </div>
+
+          <!-- Milestones grid -->
+          <div class="space-y-4">
+            <div *ngFor="let goal of goals()" class="space-y-1.5">
+              <div class="flex items-center justify-between text-xs font-semibold">
+                <span class="text-slate-300">{{ goal.name }}</span>
+                <span class="text-white">{{ (goal.current / goal.target * 100) | number:'1.0-0' }}%</span>
+              </div>
+
+              <!-- Meter tracker -->
+              <div class="w-full bg-slate-900 border border-white/5 h-2 rounded-full overflow-hidden">
+                <div [ngClass]="goal.color" [style.width.%]="(goal.current / goal.target * 100)" class="h-full rounded-full transition-all duration-1000"></div>
+              </div>
+
+              <div class="flex items-center justify-between text-[10px] text-slate-400">
+                <span>${{ goal.current | number:'1.0-0' }} saved</span>
+                <span>Target: ${{ goal.target | number:'1.0-0' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT COLUMN: Portfolio metrics & logs (Col-span 12 on mobile, 8 on desktop) -->
+      <main class="col-span-12 lg:col-span-8 space-y-6">
+        
+        <!-- FINANCIAL STATS BANNER -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          
+          <!-- Card: Account balance -->
+          <div class="bg-white/5 border border-white/10 backdrop-blur-md p-5 rounded-2xl shadow-xl relative overflow-hidden group">
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Available Liquid Assets</span>
+            <span class="block text-2xl font-extrabold font-display text-white">${{ balance() | number:'1.2-2' }}</span>
+            <span class="text-[10px] text-primary font-bold mt-1.5 block">Encrypted Account Balance</span>
+          </div>
+
+          <!-- Card: Card Credit used -->
+          <div class="bg-white/5 border border-white/10 backdrop-blur-md p-5 rounded-2xl shadow-xl relative overflow-hidden group">
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Used Card Credit</span>
+            <span class="block text-2xl font-extrabold font-display text-white">${{ creditUsed() | number:'1.2-2' }}</span>
+            
+            <!-- Progress bar -->
+            <div class="w-full bg-slate-900 h-1 rounded-full mt-2.5 overflow-hidden">
+              <div [style.width.%]="(creditUsed() / creditLimit() * 100)" class="bg-accent h-full rounded-full"></div>
+            </div>
+            <span class="text-[9px] text-slate-450 mt-1 block">Limit: ${{ creditLimit() | number:'1.0-0' }}</span>
+          </div>
+
+          <!-- Card: Monthly investments -->
+          <div class="bg-white/5 border border-white/10 backdrop-blur-md p-5 rounded-2xl shadow-xl relative overflow-hidden group">
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Monthly Investment Outlay</span>
+            <span class="block text-2xl font-extrabold font-display text-white">${{ monthlyInvestments() | number:'1.2-2' }}</span>
+            <span class="text-[10px] text-primary font-semibold mt-1.5 block">Yielding +8.4% APY average</span>
+          </div>
+        </div>
+
+        <!-- RECENT ACTIVITY TABLE -->
+        <div class="bg-white/5 border border-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl space-y-4">
+          <div class="flex items-center justify-between border-b border-white/5 pb-4">
+            <div>
+              <h3 class="text-sm font-bold uppercase tracking-wider text-white">Recent Transactions</h3>
+              <p class="text-[10px] text-slate-400">Activity report for this account portal over the last 15 days.</p>
+            </div>
+            
+            <button (click)="openTransferModal()" class="text-xs font-semibold text-primary hover:underline flex items-center gap-0.5">
+              New Transfer
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Table wrapper -->
+          <div class="overflow-x-auto border border-white/5 rounded-xl bg-slate-950/20">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-white/2 border-b border-white/5 text-slate-450 uppercase tracking-widest text-[9px] font-bold">
+                  <th class="py-3 px-4">TX ID</th>
+                  <th class="py-3 px-4">Transaction Details</th>
+                  <th class="py-3 px-4">Category</th>
+                  <th class="py-3 px-4">Date</th>
+                  <th class="py-3 px-4 text-center">Status</th>
+                  <th class="py-3 px-4 text-right">Value</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5 text-slate-350">
+                <tr *ngFor="let tx of transactions()" class="hover:bg-white/2 transition-colors">
+                  <td class="py-3.5 px-4 font-mono text-[10px] text-slate-500">{{ tx.id }}</td>
+                  <td class="py-3.5 px-4 font-semibold text-white">{{ tx.name }}</td>
+                  <td class="py-3.5 px-4 text-[10px] text-slate-400">
+                    <span class="px-2 py-0.5 rounded bg-slate-900 border border-white/5 text-slate-350 text-[10px]">
+                      {{ tx.category }}
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 text-slate-450 text-[11px]">{{ tx.date | date:'mediumDate' }}</td>
+                  <td class="py-3.5 px-4 text-center">
+                    <span [ngClass]="{
+                      'bg-primary/10 border border-primary/20 text-primary': tx.status === 'Complete',
+                      'bg-yellow-500/10 border border-yellow-500/20 text-yellow-400': tx.status === 'Pending',
+                      'bg-orange-500/10 border border-orange-500/20 text-orange-400': tx.status === 'Flagged'
+                    }" class="px-2 py-0.5 rounded-full text-[9px] font-bold">
+                      {{ tx.status }}
+                    </span>
+                  </td>
+                  <td [ngClass]="tx.amount >= 0 ? 'text-primary' : 'text-red-400'" class="py-3.5 px-4 text-right font-bold font-mono">
+                    {{ tx.amount >= 0 ? '+' : '' }}${{ tx.amount | number:'1.2-2' }}
+                  </td>
+                </tr>
+
+                <tr *ngIf="transactions().length === 0">
+                  <td colspan="6" class="py-6 text-center text-slate-550">
+                    No transactions logs are loaded for this vault.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- FIXED FLOATING TOASTS -->
+  <div class="fixed bottom-5 right-5 z-55 w-80 space-y-2 pointer-events-none">
+    <div 
+      *ngFor="let toast of toasts()" 
+      [ngClass]="{
+        'bg-green-500/20 border-green-500/40 text-green-400': toast.type === 'success',
+        'bg-blue-500/20 border-blue-500/40 text-blue-400': toast.type === 'info',
+        'bg-red-500/20 border-red-500/40 text-red-400': toast.type === 'error',
+        'bg-yellow-500/20 border-yellow-500/40 text-yellow-400': toast.type === 'warning'
+      }" 
+      class="p-4 rounded-xl border backdrop-blur-md shadow-lg pointer-events-auto flex items-start gap-2.5 text-xs animate-slide-in justify-between">
+      <div class="flex items-start gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mt-0.5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+        <span>{{ toast.message }}</span>
+      </div>
+      <button (click)="removeToast(toast.id)" class="text-slate-400 hover:text-white shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: SEND CAPITAL (TRANSFER) -->
+  <div *ngIf="isTransferModalOpen()" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+    <div class="w-full max-w-md bg-[#0b131c] border border-white/10 shadow-2xl rounded-2xl p-6 relative">
+      <div class="flex items-center justify-between border-b border-white/5 pb-3 mb-5">
+        <h3 class="text-base font-bold text-white font-display">Secure Wire Transfer</h3>
+        <button (click)="closeTransferModal()" class="text-slate-400 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      <form [formGroup]="transferForm" (ngSubmit)="onTransferSubmit()" class="space-y-4">
+        <!-- Payee Name -->
+        <div class="space-y-1">
+          <label for="payee" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Payee Full Name</label>
+          <input 
+            id="payee"
+            type="text"
+            formControlName="payeeName"
+            placeholder="John Sterling"
+            class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all" />
+          <div *ngIf="transferForm.get('payeeName')?.touched && transferForm.get('payeeName')?.invalid" class="text-[10px] text-red-400">
+            Payee name is required.
+          </div>
+        </div>
+
+        <!-- Account Number -->
+        <div class="space-y-1">
+          <label for="accNum" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Destination Account Number / IBAN</label>
+          <input 
+            id="accNum"
+            type="text"
+            formControlName="accountNum"
+            placeholder="WS-ACC-11029"
+            class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all" />
+          <div *ngIf="transferForm.get('accountNum')?.touched && transferForm.get('accountNum')?.invalid" class="text-[10px] text-red-400">
+            Please enter a valid WealthSync alphanumeric account code (6-15 digits).
+          </div>
+        </div>
+
+        <!-- Transfer Amount -->
+        <div class="space-y-1">
+          <label for="amt" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Amount ($ USD)</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-xs">$</span>
+            <input 
+              id="amt"
+              type="number"
+              formControlName="amount"
+              placeholder="10,000"
+              class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 pl-7 pr-3.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all" />
+          </div>
+          <div *ngIf="transferForm.get('amount')?.touched && transferForm.get('amount')?.invalid" class="text-[10px] text-red-400">
+            Minimum transfer value is $10.
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/5 mt-5">
+          <button type="button" (click)="closeTransferModal()" class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white">
+            Cancel
+          </button>
+          
+          <button type="submit" class="bg-primary text-slate-950 text-xs font-bold px-5 py-2.5 rounded-full hover:bg-primary-hover shadow transition-all">
+            Authorize Wire
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ALLOCATE SAVINGS (CREDIT GOAL) -->
+  <div *ngIf="isGoalModalOpen()" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+    <div class="w-full max-w-md bg-[#0b131c] border border-white/10 shadow-2xl rounded-2xl p-6 relative">
+      <div class="flex items-center justify-between border-b border-white/5 pb-3 mb-5">
+        <h3 class="text-base font-bold text-white font-display">Allocate Savings to Goal</h3>
+        <button (click)="closeGoalModal()" class="text-slate-400 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      <form [formGroup]="goalForm" (ngSubmit)="onGoalSubmit()" class="space-y-4">
+        <!-- Goal Selection -->
+        <div class="space-y-1.5">
+          <label for="goalSelect" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Select Target Savings Goal</label>
+          <select 
+            id="goalSelect"
+            formControlName="goalName"
+            class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all">
+            <option *ngFor="let goal of goals()" [value]="goal.name">
+              {{ goal.name }} (Saved: ${{ goal.current | number:'1.0-0' }} / ${{ goal.target | number:'1.0-0' }})
+            </option>
+          </select>
+        </div>
+
+        <!-- Allocate value -->
+        <div class="space-y-1.5">
+          <label for="goalAmt" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Amount to Allocate ($ USD)</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-xs">$</span>
+            <input 
+              id="goalAmt"
+              type="number"
+              formControlName="amount"
+              placeholder="5,000"
+              class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 pl-7 pr-3.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all" />
+          </div>
+          <div *ngIf="goalForm.get('amount')?.touched && goalForm.get('amount')?.invalid" class="text-[10px] text-red-400">
+            Amount must be at least $1.
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/5 mt-5">
+          <button type="button" (click)="closeGoalModal()" class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white">
+            Cancel
+          </button>
+          
+          <button type="submit" class="bg-primary text-slate-950 text-xs font-bold px-5 py-2.5 rounded-full hover:bg-primary-hover shadow transition-all">
+            Allocate Capital
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

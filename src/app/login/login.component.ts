@@ -45,24 +45,48 @@ export class LoginComponent {
     setTimeout(() => {
       const { email, password } = this.loginForm.value;
       
-      // Basic mock authentication demo
-      if (email === 'demo@wealthsync.com' && password === 'password123') {
-        this.loginSuccess.set(true);
-        this.isLoading.set(false);
-        setTimeout(() => {
-          this.router.navigate(['/']);
-        }, 1500);
-      } else if (email !== 'demo@wealthsync.com') {
-        // Allow user to log in anyway for demo purposes, but show notice for specific mock user
-        this.loginSuccess.set(true);
-        this.isLoading.set(false);
-        setTimeout(() => {
-          this.router.navigate(['/']);
-        }, 1500);
+      let targetRoute = '/dashboard';
+      let userRole = 'Standard Client';
+      let userName = 'John Doe';
+      
+      if (email === 'admin@wealthsync.com') {
+        targetRoute = '/admin';
+        userRole = 'Super Admin';
+        userName = 'Admin System Executive';
+      } else if (email === 'manager@wealthsync.com') {
+        targetRoute = '/manager';
+        userRole = 'Wealth Manager';
+        userName = 'Sarah Jenkins';
+      } else if (email === 'client@wealthsync.com' || email === 'demo@wealthsync.com') {
+        targetRoute = '/dashboard';
+        userRole = 'Premium Client';
+        userName = 'Alice Smith';
       } else {
-        this.loginError.set('Invalid email or password. Hint: Use demo@wealthsync.com and password123');
-        this.isLoading.set(false);
+        targetRoute = '/dashboard';
+        userRole = 'Standard Client';
+        // Capitalize split email name
+        const rawName = email.split('@')[0];
+        userName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
       }
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('ws_user_email', email);
+        localStorage.setItem('ws_user_role', userRole);
+        localStorage.setItem('ws_user_name', userName);
+        
+        // Also seed initial balance for the client if they are a client
+        if (targetRoute === '/dashboard') {
+          const initialBalance = userRole === 'Premium Client' ? '425000' : '12500';
+          localStorage.setItem('ws_client_balance', initialBalance);
+        }
+      }
+
+      this.loginSuccess.set(true);
+      this.isLoading.set(false);
+      
+      setTimeout(() => {
+        this.router.navigate([targetRoute]);
+      }, 1500);
     }, 1200);
   }
 }

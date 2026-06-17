@@ -1,0 +1,272 @@
+<div class="min-h-screen bg-slate-950 text-slate-100 font-sans pb-16 overflow-x-hidden relative">
+  <!-- Dynamic glows -->
+  <div class="absolute top-0 right-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-accent/5 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+    
+    <!-- Top Nav Header -->
+    <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-8 mb-8 border-b border-white/5 gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <a routerLink="/" class="flex items-center gap-2 group">
+            <div class="w-7 h-7 rounded bg-primary flex items-center justify-center badge-glow transition-transform group-hover:scale-105">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+              </svg>
+            </div>
+            <span class="text-lg font-bold text-white font-display">WealthSync</span>
+          </a>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded bg-white/5 border border-white/10 text-slate-400 uppercase tracking-widest">
+            Executive Suite
+          </span>
+        </div>
+        <h1 class="text-3xl font-extrabold font-display tracking-tight text-white leading-tight">
+          Wealth Advisor Command
+        </h1>
+        <p class="text-slate-400 text-xs mt-1">
+          Portfolio Officer: <span class="text-white font-semibold">{{ managerName() }}</span> | Department: Global Private Wealth Management.
+        </p>
+      </div>
+
+      <!-- Quick back / logouts -->
+      <div class="flex items-center gap-3">
+        <a routerLink="/admin" class="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-xs font-semibold rounded-full transition-colors flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          System Control
+        </a>
+
+        <button (click)="onLogout()" class="px-4 py-2 bg-red-950/20 border border-red-500/20 hover:bg-red-500 hover:text-slate-950 text-xs font-bold rounded-full transition-all flex items-center gap-1 cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+          </svg>
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <!-- Executive Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT COLUMN: AUM performance overview cards (Col-span 12, 3 on large) -->
+      <aside class="col-span-12 lg:col-span-3 space-y-6">
+        
+        <!-- KPI card: Total Assets Under Management -->
+        <div class="p-5 bg-white/5 border border-white/10 rounded-2xl shadow-xl relative overflow-hidden group">
+          <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Assets Under Management</span>
+          <span class="block text-2xl font-extrabold font-display text-white">${{ totalAUM() | number:'1.2-2' }}</span>
+          <span class="text-[10px] text-primary font-bold mt-1.5 flex items-center gap-0.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+            </svg>
+            +12.8% this quarter
+          </span>
+        </div>
+
+        <!-- KPI card: Avg AUM balance -->
+        <div class="p-5 bg-white/5 border border-white/10 rounded-2xl shadow-xl">
+          <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Avg Advisor Portfolio</span>
+          <span class="block text-xl font-extrabold font-display text-white">${{ avgClientAUM() | number:'1.2-2' }}</span>
+          <span class="text-[10px] text-slate-400 mt-1.5 block">Across {{ clients().length }} private accounts</span>
+        </div>
+
+        <!-- KPI card: Approvals queue -->
+        <div class="p-5 bg-white/5 border border-white/10 rounded-2xl shadow-xl relative overflow-hidden">
+          <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Validation Queue</span>
+          <span class="block text-2xl font-extrabold font-display text-white">{{ flaggedApprovalsCount() }} Alerts</span>
+          <span class="text-[10px] text-accent font-bold mt-1.5 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-accent animate-ping"></span>
+            Awaiting executive sanction
+          </span>
+        </div>
+
+        <!-- SECURE COMMUNICATOR WIDGET -->
+        <div class="p-5 bg-white/5 border border-white/10 rounded-2xl shadow-xl space-y-4">
+          <div class="border-b border-white/5 pb-2.5">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-white">Client Communicator</h3>
+            <p class="text-[10px] text-slate-400">Dispatch secure memos directly to the client's command center.</p>
+          </div>
+
+          <form [formGroup]="messageForm" (ngSubmit)="onSendMessage()" class="space-y-3">
+            <div class="space-y-1">
+              <label for="msgClient" class="block text-[9px] font-bold uppercase text-slate-400">Select Client</label>
+              <select 
+                id="msgClient"
+                formControlName="clientId"
+                class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all">
+                <option value="">-- Choose Private Client --</option>
+                <option *ngFor="let c of clients()" [value]="c.id">
+                  {{ c.name }} ({{ c.id }})
+                </option>
+              </select>
+            </div>
+
+            <div class="space-y-1">
+              <label for="msgText" class="block text-[9px] font-bold uppercase text-slate-400">Secure Dispatch Memo</label>
+              <textarea 
+                id="msgText"
+                formControlName="message"
+                rows="3"
+                placeholder="Please confirm source of wire transfer USR-002..."
+                class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all shadow-inner resize-none"></textarea>
+            </div>
+
+            <button 
+              type="submit"
+              class="w-full py-2 bg-primary text-slate-950 text-xs font-bold rounded-xl hover:bg-primary-hover shadow transition-all cursor-pointer">
+              Dispatch Memo
+            </button>
+          </form>
+        </div>
+      </aside>
+
+      <!-- RIGHT COLUMN: Client table & Approval log (Col-span 12, 9 on large) -->
+      <main class="col-span-12 lg:col-span-9 space-y-8">
+        
+        <!-- PENDING APPROVAL QUEUE CARD -->
+        <section *ngIf="approvals().length > 0" class="p-6 bg-amber-500/5 border border-amber-500/20 rounded-2xl shadow-xl space-y-4">
+          <div class="flex items-center justify-between border-b border-amber-500/10 pb-3">
+            <div>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-amber-400 font-display flex items-center gap-1.5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400 animate-pulse" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                Pending Executive Authorisation Queue
+              </h2>
+              <p class="text-[10px] text-amber-500/80">These client transactions exceeded security metrics and require senior signoff.</p>
+            </div>
+            
+            <span class="text-[10px] font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded">
+              {{ flaggedApprovalsCount() }} PENDING
+            </span>
+          </div>
+
+          <!-- Approvals grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div *ngFor="let item of approvals()" class="p-4 bg-slate-950/60 border border-white/5 rounded-xl text-xs flex flex-col justify-between gap-4">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="font-mono text-[9px] text-slate-500 font-bold">{{ item.id }}</span>
+                  <span class="text-[9px] text-slate-450">{{ item.timestamp | date:'shortTime' }}</span>
+                </div>
+
+                <div class="space-y-1">
+                  <span class="block text-slate-200 font-semibold">{{ item.clientName }} ({{ item.clientId }})</span>
+                  <span class="block text-white font-bold text-sm">{{ item.type }}: ${{ item.amount | number:'1.2-2' }}</span>
+                  <span class="block text-[10px] text-red-400 bg-red-950/20 border border-red-500/10 px-2 py-1 rounded mt-1">
+                    Reason: {{ item.flagReason }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Action button triggers -->
+              <div class="flex items-center gap-2 pt-2 border-t border-white/5">
+                <button 
+                  (click)="rejectTransaction(item.id)"
+                  class="flex-1 py-1.5 bg-red-950/30 hover:bg-red-550 border border-red-550/20 hover:border-transparent text-red-400 hover:text-slate-950 text-[10px] font-bold rounded-lg transition-all cursor-pointer">
+                  Reject Wire
+                </button>
+                <button 
+                  (click)="approveTransaction(item.id)"
+                  class="flex-1 py-1.5 bg-primary text-slate-950 text-[10px] font-bold rounded-lg hover:bg-primary-hover shadow transition-all cursor-pointer">
+                  Authorize Release
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MANAGED CLIENTS DIRECTORY -->
+        <section class="p-6 bg-white/5 border border-white/10 rounded-2xl shadow-xl space-y-4">
+          <div class="border-b border-white/5 pb-4">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-white">Managed Client Portfolios</h2>
+            <p class="text-[10px] text-slate-400">Real-time status updates and asset values of clients assigned to this manager.</p>
+          </div>
+
+          <!-- Table directory -->
+          <div class="overflow-x-auto border border-white/5 rounded-xl bg-slate-950/20">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-white/2 border-b border-white/5 text-slate-450 uppercase tracking-widest text-[9px] font-bold">
+                  <th class="py-3 px-4">Client ID</th>
+                  <th class="py-3 px-4">Client Name</th>
+                  <th class="py-3 px-4">Risk Profile</th>
+                  <th class="py-3 px-4">Access Status</th>
+                  <th class="py-3 px-4 text-right">Portfolio Balance</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5 text-slate-300">
+                <tr *ngFor="let c of clients()" class="hover:bg-white/2 transition-colors">
+                  <td class="py-3.5 px-4 font-mono text-[10px] text-slate-500">{{ c.id }}</td>
+                  <td class="py-3.5 px-4 font-semibold text-white">
+                    <div>
+                      <span>{{ c.name }}</span>
+                      <span class="block text-[9px] text-slate-500 font-normal mt-0.5">{{ c.email }}</span>
+                    </div>
+                  </td>
+                  <td class="py-3.5 px-4">
+                    <span [ngClass]="{
+                      'bg-red-500/10 border border-red-500/20 text-red-400': c.riskProfile === 'Aggressive',
+                      'bg-amber-500/10 border border-amber-500/20 text-amber-400': c.riskProfile === 'Balanced',
+                      'bg-green-500/10 border border-green-500/20 text-green-400': c.riskProfile === 'Conservative'
+                    }" class="px-2 py-0.5 rounded text-[10px] font-semibold">
+                      {{ c.riskProfile }}
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4">
+                    <span [ngClass]="{
+                      'bg-primary/10 border border-primary/20 text-primary': c.status === 'Active',
+                      'bg-red-500/10 border border-red-500/20 text-red-400': c.status === 'Suspended',
+                      'bg-accent/10 border border-accent/20 text-accent': c.status === 'Flagged'
+                    }" class="px-2 py-0.5 rounded-full text-[9px] font-bold">
+                      {{ c.status }}
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 text-right font-bold font-mono text-white">
+                    ${{ c.balance | number:'1.2-2' }}
+                  </td>
+                  <td class="py-3.5 px-4 text-right">
+                    <button 
+                      (click)="messageForm.get('clientId')?.setValue(c.id)"
+                      class="px-2.5 py-1 bg-white/5 border border-white/10 hover:bg-white/10 text-[10px] font-bold rounded-lg transition-all cursor-pointer">
+                      Send Memo
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- FIXED FLOATING TOASTS -->
+  <div class="fixed bottom-5 right-5 z-55 w-80 space-y-2 pointer-events-none">
+    <div 
+      *ngFor="let toast of toasts()" 
+      [ngClass]="{
+        'bg-green-500/20 border-green-500/40 text-green-400': toast.type === 'success',
+        'bg-blue-500/20 border-blue-500/40 text-blue-400': toast.type === 'info',
+        'bg-red-500/20 border-red-500/40 text-red-400': toast.type === 'error',
+        'bg-yellow-500/20 border-yellow-500/40 text-yellow-400': toast.type === 'warning'
+      }" 
+      class="p-4 rounded-xl border backdrop-blur-md shadow-lg pointer-events-auto flex items-start gap-2.5 text-xs animate-slide-in justify-between">
+      <div class="flex items-start gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mt-0.5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+        <span>{{ toast.message }}</span>
+      </div>
+      <button (click)="removeToast(toast.id)" class="text-slate-400 hover:text-white shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
