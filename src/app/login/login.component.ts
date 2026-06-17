@@ -48,25 +48,54 @@ export class LoginComponent {
       let targetRoute = '/dashboard';
       let userRole = 'Standard Client';
       let userName = 'John Doe';
+      let userBalance = '12500';
+
+      // Check if user exists in the local storage users list (seeded/modified by admin)
+      let foundUser = null;
+      if (typeof window !== 'undefined') {
+        const storedUsers = localStorage.getItem('ws_users_list');
+        if (storedUsers) {
+          try {
+            const userList = JSON.parse(storedUsers);
+            foundUser = userList.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
+          } catch (e) {
+            console.error('Error parsing ws_users_list', e);
+          }
+        }
+      }
       
-      if (email === 'admin@wealthsync.com') {
-        targetRoute = '/admin';
-        userRole = 'Super Admin';
-        userName = 'Admin System Executive';
-      } else if (email === 'manager@wealthsync.com') {
-        targetRoute = '/manager';
-        userRole = 'Wealth Manager';
-        userName = 'Sarah Jenkins';
-      } else if (email === 'client@wealthsync.com' || email === 'demo@wealthsync.com') {
-        targetRoute = '/dashboard';
-        userRole = 'Premium Client';
-        userName = 'Alice Smith';
+      if (foundUser) {
+        userName = foundUser.name;
+        userRole = foundUser.role;
+        userBalance = String(foundUser.balance);
+        if (userRole === 'Super Admin') {
+          targetRoute = '/admin';
+        } else if (userRole === 'Wealth Manager') {
+          targetRoute = '/manager';
+        } else {
+          targetRoute = '/dashboard';
+        }
       } else {
-        targetRoute = '/dashboard';
-        userRole = 'Standard Client';
-        // Capitalize split email name
-        const rawName = email.split('@')[0];
-        userName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+        // Fallback checks
+        if (email === 'admin@wealthsync.com') {
+          targetRoute = '/admin';
+          userRole = 'Super Admin';
+          userName = 'Admin System Executive';
+        } else if (email === 'manager@wealthsync.com') {
+          targetRoute = '/manager';
+          userRole = 'Wealth Manager';
+          userName = 'Sarah Jenkins';
+        } else if (email === 'client@wealthsync.com' || email === 'demo@wealthsync.com') {
+          targetRoute = '/dashboard';
+          userRole = 'Premium Client';
+          userName = 'Alice Smith';
+          userBalance = '425000';
+        } else {
+          targetRoute = '/dashboard';
+          userRole = 'Standard Client';
+          const rawName = email.split('@')[0];
+          userName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+        }
       }
 
       if (typeof window !== 'undefined') {
@@ -76,8 +105,7 @@ export class LoginComponent {
         
         // Also seed initial balance for the client if they are a client
         if (targetRoute === '/dashboard') {
-          const initialBalance = userRole === 'Premium Client' ? '425000' : '12500';
-          localStorage.setItem('ws_client_balance', initialBalance);
+          localStorage.setItem('ws_client_balance', userBalance);
         }
       }
 

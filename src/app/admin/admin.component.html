@@ -407,7 +407,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
               </svg>
-              Add Client Portal
+              Add Portal Account
             </button>
           </div>
 
@@ -457,7 +457,7 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-white/5 text-slate-300">
-                <tr *ngFor="let user of filteredUsers()" class="hover:bg-white/2 transition-colors">
+                <tr *ngFor="let user of clientsList()" class="hover:bg-white/2 transition-colors">
                   <td class="py-3.5 px-4 font-mono text-slate-450 font-bold">{{ user.id }}</td>
                   <td class="py-3.5 px-4 font-semibold text-white">{{ user.name }}</td>
                   <td class="py-3.5 px-4 text-slate-450 text-[11px]">{{ user.email }}</td>
@@ -523,9 +523,99 @@
                 </tr>
 
                 <!-- Empty state -->
-                <tr *ngIf="filteredUsers().length === 0">
+                <tr *ngIf="clientsList().length === 0">
                   <td colspan="7" class="py-8 text-center text-slate-500">
                     No clients found matching the query details.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Wealth Advisors & Staff Directory -->
+        <section *ngIf="showUsers()" [ngClass]="{
+          'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl': cardStyle() === 'glass',
+          'bg-slate-900 border border-slate-800': cardStyle() === 'flat',
+          'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)]': cardStyle() === 'neon'
+        }" class="p-6 rounded-2xl transition-all duration-300">
+          
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-white/5 pb-5 mb-6 gap-4">
+            <div>
+              <h2 class="text-base font-bold font-display text-white">Wealth Advisors & Staff Directory</h2>
+              <p class="text-xs text-slate-400">Search and configure access settings for managers, executives, and super admins.</p>
+            </div>
+          </div>
+
+          <!-- Table Container -->
+          <div class="overflow-x-auto border border-white/5 rounded-xl bg-slate-950/20">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-white/2 border-b border-white/5 text-slate-450 uppercase tracking-widest text-[9px] font-bold">
+                  <th class="py-3 px-4">Staff ID</th>
+                  <th class="py-3 px-4">Full Name</th>
+                  <th class="py-3 px-4">Contact Info</th>
+                  <th class="py-3 px-4">Executive Role</th>
+                  <th class="py-3 px-4 text-center">Status</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5 text-slate-300">
+                <tr *ngFor="let staff of staffList()" class="hover:bg-white/2 transition-colors">
+                  <td class="py-3.5 px-4 font-mono text-slate-450 font-bold">{{ staff.id }}</td>
+                  <td class="py-3.5 px-4 font-semibold text-white">{{ staff.name }}</td>
+                  <td class="py-3.5 px-4 text-slate-450 text-[11px]">{{ staff.email }}</td>
+                  <td class="py-3.5 px-4">
+                    <span [ngClass]="{
+                      'bg-primary/10 border border-primary/20 text-primary': staff.role === 'Super Admin',
+                      'bg-blue-500/10 border border-blue-500/20 text-blue-400': staff.role === 'Wealth Manager'
+                    }" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold">
+                      {{ staff.role }}
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 text-center">
+                    <span [ngClass]="{
+                      'bg-primary/10 border border-primary/20 text-primary': staff.status === 'Active',
+                      'bg-red-500/10 border border-red-500/20 text-red-400': staff.status === 'Suspended',
+                      'bg-accent/10 border border-accent/20 text-accent': staff.status === 'Flagged'
+                    }" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold">
+                      {{ staff.status }}
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 text-right">
+                    <div class="flex items-center justify-end gap-1.5">
+                      <!-- Change Status inline toggle -->
+                      <button 
+                        *ngIf="staff.status !== 'Active'" 
+                        (click)="changeUserStatus(staff.id, 'Active')"
+                        class="px-2 py-1 bg-primary/10 border border-primary/20 hover:bg-primary/25 rounded text-[10px] text-primary font-bold transition-all">
+                        Activate
+                      </button>
+                      
+                      <button 
+                        *ngIf="staff.status === 'Active'" 
+                        (click)="changeUserStatus(staff.id, 'Suspended')"
+                        class="px-2 py-1 bg-red-500/10 border border-red-500/20 hover:bg-red-500/25 rounded text-[10px] text-red-400 font-bold transition-all">
+                        Suspend
+                      </button>
+
+                      <!-- Delete -->
+                      <button 
+                        (click)="deleteUser(staff.id)"
+                        title="Delete Account"
+                        class="p-1 bg-red-950/20 border border-red-900/30 text-red-500 hover:bg-red-500 hover:text-slate-950 rounded transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Empty state -->
+                <tr *ngIf="staffList().length === 0">
+                  <td colspan="6" class="py-8 text-center text-slate-500">
+                    No advisors or staff accounts found.
                   </td>
                 </tr>
               </tbody>
@@ -749,7 +839,7 @@
         </div>
 
         <!-- Initial Assets -->
-        <div class="space-y-1">
+        <div *ngIf="userForm.get('role')?.value !== 'Wealth Manager'" class="space-y-1">
           <label for="usrBalance" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Initial Asset Deposit ($ USD)</label>
           <div class="relative">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-xs">$</span>
@@ -776,7 +866,6 @@
               <option value="Premium Client">Premium Client</option>
               <option value="Standard Client">Standard Client</option>
               <option value="Wealth Manager">Wealth Manager</option>
-              <option value="Super Admin">Super Admin</option>
             </select>
           </div>
 

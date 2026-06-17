@@ -140,6 +140,7 @@ export class DashboardComponent {
     
     if (typeof window !== 'undefined') {
       localStorage.setItem('ws_client_balance', String(updatedBalance));
+      this.syncBalanceToUsersList(updatedBalance);
     }
 
     // Add to transaction log
@@ -193,6 +194,7 @@ export class DashboardComponent {
     
     if (typeof window !== 'undefined') {
       localStorage.setItem('ws_client_balance', String(updatedBalance));
+      this.syncBalanceToUsersList(updatedBalance);
     }
 
     // Add progress to goal
@@ -213,6 +215,22 @@ export class DashboardComponent {
     this.transactions.update(curr => [newTx, ...curr]);
     this.closeGoalModal();
     this.addToast(`Credited $${numericAmount.toLocaleString()} to ${goalName}`, 'success');
+  }
+
+  private syncBalanceToUsersList(newBalance: number): void {
+    if (typeof window !== 'undefined') {
+      const email = this.userEmail().toLowerCase();
+      const storedUsers = localStorage.getItem('ws_users_list');
+      if (storedUsers) {
+        try {
+          const allUsers = JSON.parse(storedUsers);
+          const updatedUsers = allUsers.map((u: any) => u.email.toLowerCase() === email ? { ...u, balance: newBalance } : u);
+          localStorage.setItem('ws_users_list', JSON.stringify(updatedUsers));
+        } catch (e) {
+          console.error('Failed to sync updated balance to ws_users_list', e);
+        }
+      }
+    }
   }
 
   // Toasts
