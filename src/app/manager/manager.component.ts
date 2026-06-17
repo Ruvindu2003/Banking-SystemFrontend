@@ -87,12 +87,38 @@ export class ManagerComponent {
       if (email) this.managerEmail.set(email);
       if (role) this.managerRole.set(role);
       
-      // Load current balance of Alice Smith from localStorage to show sync in Wealth Manager Client list!
-      const aliceBalance = localStorage.getItem('ws_client_balance');
-      if (aliceBalance) {
-        this.clients.update(curr => 
-          curr.map(c => c.id === 'USR-002' ? { ...c, balance: Number(aliceBalance) } : c)
-        );
+      // Load and sync all clients from ws_users_list
+      const savedUsersList = localStorage.getItem('ws_users_list');
+      if (savedUsersList) {
+        try {
+          const allUsers: any[] = JSON.parse(savedUsersList);
+          const clientUsers = allUsers
+            .filter(u => u.role.includes('Client'))
+            .map((u, index) => {
+              // Map default or existing risk profile
+              const profiles: ('Conservative' | 'Balanced' | 'Aggressive')[] = ['Balanced', 'Conservative', 'Aggressive'];
+              const riskProfile = profiles[index % profiles.length];
+              return {
+                id: u.id,
+                name: u.name,
+                email: u.email,
+                balance: u.balance,
+                status: u.status as any,
+                riskProfile: riskProfile
+              };
+            });
+          this.clients.set(clientUsers);
+        } catch (e) {
+          console.error('Failed to sync ws_users_list in Wealth Manager dashboard', e);
+        }
+      } else {
+        // Seed default Alice Smith balance changes if ws_users_list does not exist yet
+        const aliceBalance = localStorage.getItem('ws_client_balance');
+        if (aliceBalance) {
+          this.clients.update(curr => 
+            curr.map(c => c.id === 'USR-002' ? { ...c, balance: Number(aliceBalance) } : c)
+          );
+        }
       }
     }
   }
@@ -106,16 +132,28 @@ export class ManagerComponent {
     this.approvals.update(curr => curr.filter(a => a.id !== approvalId));
     this.addToast(`Transaction ${approvalId} for $${item.amount.toLocaleString()} has been APPROVED`, 'success');
 
-    // If it's Alice Smith, sync balance reduction
-    if (item.clientId === 'USR-002') {
-      const client = this.clients().find(c => c.id === 'USR-002');
-      if (client) {
-        const newBalance = Math.max(0, client.balance - item.amount);
-        this.clients.update(curr => 
-          curr.map(c => c.id === 'USR-002' ? { ...c, balance: newBalance } : c)
-        );
-        if (typeof window !== 'undefined') {
+    // Sync balance reduction
+    const client = this.clients().find(c => c.id === item.clientId);
+    if (client) {
+      const newBalance = Math.max(0, client.balance - item.amount);
+      this.clients.update(curr => 
+        curr.map(c => c.id === item.clientId ? { ...c, balance: newBalance } : c)
+      );
+      if (typeof window !== 'undefined') {
+        if (item.clientId === 'USR-002') {
           localStorage.setItem('ws_client_balance', String(newBalance));
+        }
+
+        // Sync to ws_users_list
+        const storedUsers = localStorage.getItem('ws_users_list');
+        if (storedUsers) {
+          try {
+            const allUsers = JSON.parse(storedUsers);
+            const updatedUsers = allUsers.map((u: any) => u.id === item.clientId ? { ...u, balance: newBalance } : u);
+            localStorage.setItem('ws_users_list', JSON.stringify(updatedUsers));
+          } catch (e) {
+            console.error('Failed to update ws_users_list on transaction approval', e);
+          }
         }
       }
     }

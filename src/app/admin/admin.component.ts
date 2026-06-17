@@ -106,6 +106,14 @@ export class AdminComponent {
     });
   });
 
+  clientsList = computed(() => {
+    return this.filteredUsers().filter(u => u.role.includes('Client'));
+  });
+
+  staffList = computed(() => {
+    return this.filteredUsers().filter(u => u.role.includes('Manager') || u.role.includes('Admin'));
+  });
+
   totalAssets = computed(() => {
     return this.users().reduce((sum, u) => sum + u.balance, 0);
   });
@@ -146,9 +154,21 @@ export class AdminComponent {
 
       const savedLogs = localStorage.getItem('ws_admin_show_logs');
       if (savedLogs) this.showLogs.set(savedLogs === 'true');
+
+      // Load/Seed Users List
+      const savedUsersList = localStorage.getItem('ws_users_list');
+      if (savedUsersList) {
+        try {
+          this.users.set(JSON.parse(savedUsersList));
+        } catch (e) {
+          console.error('Failed to parse ws_users_list', e);
+        }
+      } else {
+        localStorage.setItem('ws_users_list', JSON.stringify(this.users()));
+      }
     }
 
-    // Effect to auto-save configs
+    // Effect to auto-save configs & users list
     effect(() => {
       if (typeof window !== 'undefined') {
         localStorage.setItem('ws_admin_theme', this.currentTheme());
@@ -158,6 +178,7 @@ export class AdminComponent {
         localStorage.setItem('ws_admin_show_users', String(this.showUsers()));
         localStorage.setItem('ws_admin_show_simulator', String(this.showSimulator()));
         localStorage.setItem('ws_admin_show_logs', String(this.showLogs()));
+        localStorage.setItem('ws_users_list', JSON.stringify(this.users()));
       }
     });
   }
@@ -248,21 +269,28 @@ export class AdminComponent {
     }
 
     const { name, email, role, balance, status } = this.userForm.value;
-    const newId = `USR-0${this.users().length + 1}`;
+    const isManager = role.includes('Manager');
+    const newId = isManager ? `MGR-0${this.users().length + 1}` : `USR-0${this.users().length + 1}`;
     
     const newUser: MockUser = {
       id: newId,
       name,
       email,
       role,
-      balance: Number(balance),
+      balance: isManager ? 0 : Number(balance),
       status
     };
 
     this.users.update(current => [...current, newUser]);
     this.closeAddUserModal();
-    this.addToast(`New client ${name} registered successfully`, 'success');
-    this.addAuditLog(newId, name, 'Deposit', Number(balance), `Account registered with initial deposit: $${Number(balance).toLocaleString()}`);
+
+    if (isManager) {
+      this.addToast(`New wealth manager ${name} registered successfully`, 'success');
+      this.addAuditLog(newId, name, 'Status Update', 0, `Wealth manager registered successfully`);
+    } else {
+      this.addToast(`New client ${name} registered successfully`, 'success');
+      this.addAuditLog(newId, name, 'Deposit', Number(balance), `Account registered with initial deposit: $${Number(balance).toLocaleString()}`);
+    }
   }
 
   // Simulate Transactions
