@@ -538,10 +538,10 @@
           
           <!-- Widget: Transaction Simulator -->
           <section *ngIf="showSimulator()" [ngClass]="{
-            'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl col-span-12 md:col-span-5': cardStyle() === 'glass',
-            'bg-slate-900 border border-slate-800 col-span-12 md:col-span-5': cardStyle() === 'flat',
-            'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)] col-span-12 md:col-span-5': cardStyle() === 'neon'
-          }" class="p-6 rounded-2xl transition-all duration-300">
+            'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl': cardStyle() === 'glass',
+            'bg-slate-900 border border-slate-800': cardStyle() === 'flat',
+            'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)]': cardStyle() === 'neon'
+          }" class="col-span-12 md:col-span-5 p-6 rounded-2xl transition-all duration-300">
             
             <div class="border-b border-white/5 pb-3 mb-5">
               <h2 class="text-sm font-bold uppercase tracking-widest text-white font-display">
@@ -621,10 +621,10 @@
 
           <!-- Widget: Audit Activity Logs -->
           <section *ngIf="showLogs()" [ngClass]="{
-            'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl col-span-12 md:col-span-7': cardStyle() === 'glass',
-            'bg-slate-900 border border-slate-800 col-span-12 md:col-span-7': cardStyle() === 'flat',
-            'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)] col-span-12 md:col-span-7': cardStyle() === 'neon'
-          }" class="p-6 rounded-2xl transition-all duration-300">
+            'bg-white/5 border border-white/10 backdrop-blur-md shadow-xl': cardStyle() === 'glass',
+            'bg-slate-900 border border-slate-800': cardStyle() === 'flat',
+            'bg-[#030712] border border-primary/45 shadow-[0_0_15px_rgba(var(--color-primary),0.05)]': cardStyle() === 'neon'
+          }" class="col-span-12 md:col-span-7 p-6 rounded-2xl transition-all duration-300">
             
             <div class="border-b border-white/5 pb-3 mb-5 flex items-center justify-between">
               <div>
