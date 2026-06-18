@@ -1,0 +1,943 @@
+<div class="min-h-screen bg-slate-950 text-slate-100 font-sans pb-16 overflow-x-hidden relative">
+  <!-- Glowing ambient lights -->
+  <div class="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-accent/5 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+    
+    <!-- Header Area -->
+    <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-8 mb-8 border-b border-white/5 gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <a routerLink="/" class="flex items-center gap-2 group">
+            <div class="w-7 h-7 rounded bg-primary flex items-center justify-center badge-glow transition-transform group-hover:scale-105">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+              </svg>
+            </div>
+            <span class="text-lg font-bold text-white font-display">WealthSync</span>
+          </a>
+          <!-- Membership Badge -->
+          <span [ngClass]="userRole() === 'Premium Client' ? 'bg-amber-500/10 border-amber-500/20 text-amber-400' : 'bg-slate-900 border-white/10 text-slate-400'" class="text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-widest flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+            {{ userRole() }}
+          </span>
+        </div>
+        
+        <h1 class="text-3xl font-extrabold font-display tracking-tight text-white leading-tight">
+          Welcome back, <span class="text-primary text-glow">{{ userName() }}</span>
+        </h1>
+        <p class="text-slate-400 text-xs mt-1">
+          Secured Account ID: <span class="font-mono text-white">{{ accountNumber() }}</span> | Standard AES-256 Banking Protection Active.
+        </p>
+      </div>
+
+      <!-- Navigation Tabs & Actions -->
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- Sub-navigation Tabs -->
+        <div class="flex bg-slate-900 border border-white/5 rounded-full p-1 text-xs font-semibold mr-2">
+          <button 
+            (click)="setTab('portfolio')" 
+            [ngClass]="activeTab() === 'portfolio' ? 'bg-primary text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'"
+            class="px-4 py-1.5 rounded-full transition-all cursor-pointer">
+            Portfolio
+          </button>
+          <button 
+            (click)="setTab('simulator')" 
+            [ngClass]="activeTab() === 'simulator' ? 'bg-primary text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'"
+            class="px-4 py-1.5 rounded-full transition-all cursor-pointer">
+            Credit Simulator
+          </button>
+          <button 
+            (click)="setTab('settings')" 
+            [ngClass]="activeTab() === 'settings' ? 'bg-primary text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'"
+            class="px-4 py-1.5 rounded-full transition-all cursor-pointer">
+            Settings
+          </button>
+        </div>
+
+        <a routerLink="/admin" class="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-xs font-semibold rounded-full transition-colors flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          Control panel
+        </a>
+
+        <button (click)="onLogout()" class="px-4 py-2 bg-red-950/20 border border-red-500/20 hover:bg-red-500 hover:text-slate-950 text-xs font-bold rounded-full transition-all flex items-center gap-1 cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+          </svg>
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT COLUMN: Card Graphic & Goals -->
+      <aside class="col-span-12 lg:col-span-4 space-y-6">
+        
+        <!-- CARD CONTAINER WITH FLIP CAPABILITY -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase">Interactive Wallet Card</span>
+            
+            <div class="flex gap-2">
+              <button 
+                (click)="setCardType('credit')"
+                [ngClass]="cardType() === 'credit' ? 'text-primary' : 'text-slate-500 hover:text-slate-300'"
+                class="text-[9px] uppercase font-bold tracking-wider cursor-pointer">
+                Credit Card
+              </button>
+              <span class="text-slate-700">|</span>
+              <button 
+                (click)="setCardType('debit')"
+                [ngClass]="cardType() === 'debit' ? 'text-primary' : 'text-slate-500 hover:text-slate-300'"
+                class="text-[9px] uppercase font-bold tracking-wider cursor-pointer">
+                Debit Card
+              </button>
+            </div>
+          </div>
+
+          <!-- GLOWING CARD MOCKUP: Flip Container -->
+          <div class="perspective-container w-full h-56 select-none cursor-pointer" (click)="toggleCardFlip()">
+            <div class="card-inner w-full h-full duration-700 relative" [class.flipped]="isCardFlipped()">
+              
+              <!-- Front Side of Card -->
+              <div 
+                [ngClass]="{
+                  'theme-emerald-gradient': cardColorTheme() === 'emerald',
+                  'theme-sapphire-gradient': cardColorTheme() === 'sapphire',
+                  'theme-amethyst-gradient': cardColorTheme() === 'amethyst',
+                  'theme-carbon-gradient': cardColorTheme() === 'carbon'
+                }"
+                class="card-front absolute inset-0 rounded-3xl p-6 border border-white/15 flex flex-col justify-between overflow-hidden shadow-2xl backface-hidden">
+                <!-- Ambient card glows -->
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-28 h-28 bg-white/5 rounded-full blur-2xl"></div>
+
+                <!-- Card Top Row -->
+                <div class="flex items-center justify-between z-10">
+                  <div>
+                    <span class="block text-[8px] tracking-wider text-white/50 font-bold uppercase leading-none">WealthSync Vault</span>
+                    <span class="block text-xs font-bold text-white font-display mt-0.5">
+                      {{ cardType() === 'credit' ? 'Black Signature' : 'Platinum Account' }}
+                    </span>
+                  </div>
+                  
+                  <div class="w-7 h-7 rounded bg-white/10 border border-white/20 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Card Chip -->
+                <div class="w-10 h-7 rounded bg-gradient-to-tr from-amber-500/30 to-amber-400/80 border border-amber-500/20 shadow-inner z-10 shrink-0"></div>
+
+                <!-- Card Numbers -->
+                <div class="z-10 mt-1">
+                  <span class="font-mono text-base tracking-widest text-white leading-none">
+                    {{ cardType() === 'credit' ? '••••  ••••  ••••  8820' : '••••  ••••  ••••  9015' }}
+                  </span>
+                </div>
+
+                <!-- Bottom card metadata -->
+                <div class="flex items-center justify-between z-10 border-t border-white/10 pt-3">
+                  <div>
+                    <span class="block text-[7px] text-white/40 font-bold uppercase leading-none">CARDHOLDER</span>
+                    <span class="block text-xs font-semibold text-slate-200 uppercase mt-0.5 truncate max-w-[150px]">{{ userName() }}</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="block text-[7px] text-white/40 font-bold uppercase leading-none">EXPIRES</span>
+                    <span class="block text-xs font-semibold text-slate-200 mt-0.5">09/29</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Back Side of Card -->
+              <div 
+                [ngClass]="{
+                  'theme-emerald-gradient': cardColorTheme() === 'emerald',
+                  'theme-sapphire-gradient': cardColorTheme() === 'sapphire',
+                  'theme-amethyst-gradient': cardColorTheme() === 'amethyst',
+                  'theme-carbon-gradient': cardColorTheme() === 'carbon'
+                }"
+                class="card-back absolute inset-0 rounded-3xl border border-white/15 py-6 flex flex-col justify-between overflow-hidden shadow-2xl backface-hidden [transform:rotateY(180deg)]">
+                
+                <!-- Black Magnetic Stripe -->
+                <div class="w-full h-10 bg-slate-950 mt-2 shrink-0"></div>
+
+                <div class="px-6 flex items-center justify-between mt-4">
+                  <!-- Signature strip -->
+                  <div class="bg-white/10 h-8 flex-1 rounded border border-white/15 px-3 flex items-center justify-start text-[10px] text-white/50 italic select-none">
+                    {{ userName() }}
+                  </div>
+                  <!-- CVV Code -->
+                  <div class="ml-4 shrink-0 bg-white text-slate-950 px-2 py-1 font-mono text-xs font-bold rounded">
+                    742
+                  </div>
+                </div>
+
+                <!-- Legal notice / phone -->
+                <div class="px-6 mt-4 border-t border-white/10 pt-3 flex justify-between items-center text-[7px] text-white/45">
+                  <span>Authorized Signature Required</span>
+                  <span>Support: +1 800-SYNCPRVY</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Card customization helpers -->
+          <div class="p-3 bg-white/5 border border-white/10 rounded-xl flex items-center justify-between text-xs">
+            <span class="text-slate-400">Card Theme:</span>
+            <div class="flex items-center gap-1.5">
+              <button 
+                (click)="setCardTheme('emerald'); $event.stopPropagation()" 
+                [class.ring-2]="cardColorTheme() === 'emerald'"
+                class="w-4 h-4 rounded-full bg-emerald-500 border border-white/10 focus:outline-none ring-offset-2 ring-offset-slate-950 ring-emerald-400 cursor-pointer"></button>
+              <button 
+                (click)="setCardTheme('sapphire'); $event.stopPropagation()" 
+                [class.ring-2]="cardColorTheme() === 'sapphire'"
+                class="w-4 h-4 rounded-full bg-blue-500 border border-white/10 focus:outline-none ring-offset-2 ring-offset-slate-950 ring-blue-400 cursor-pointer"></button>
+              <button 
+                (click)="setCardTheme('amethyst'); $event.stopPropagation()" 
+                [class.ring-2]="cardColorTheme() === 'amethyst'"
+                class="w-4 h-4 rounded-full bg-purple-500 border border-white/10 focus:outline-none ring-offset-2 ring-offset-slate-950 ring-purple-400 cursor-pointer"></button>
+              <button 
+                (click)="setCardTheme('carbon'); $event.stopPropagation()" 
+                [class.ring-2]="cardColorTheme() === 'carbon'"
+                class="w-4 h-4 rounded-full bg-zinc-500 border border-white/10 focus:outline-none ring-offset-2 ring-offset-slate-950 ring-zinc-400 cursor-pointer"></button>
+            </div>
+            <button (click)="toggleCardFlip()" class="text-[10px] text-primary hover:underline font-bold uppercase">
+              Flip Card
+            </button>
+          </div>
+        </div>
+
+        <!-- QUICK FINANCIAL DIRECTORIES (Send Money Widget) -->
+        <div class="p-5 bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl shadow-xl space-y-4">
+          <div class="border-b border-white/5 pb-2.5">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-white">Transfer Liquidity</h3>
+            <p class="text-[10px] text-slate-400">Instantly execute a secure transfer to local accounts.</p>
+          </div>
+
+          <!-- Quick transfer buttons -->
+          <div class="grid grid-cols-2 gap-3">
+            <button 
+              (click)="openTransferModal()"
+              class="py-2.5 bg-primary text-slate-950 text-xs font-bold rounded-xl hover:bg-primary-hover shadow hover:shadow-primary/10 transition-all flex items-center justify-center gap-1 cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707L6 18.414V5.586L3.707 3.293zM17.707 5.293L14 1.586v12.828l2.293 2.293A1 1 0 0018 16V6a1 1 0 00-.293-.707z" clip-rule="evenodd" />
+              </svg>
+              Send Capital
+            </button>
+            
+            <button 
+              (click)="openGoalModal()"
+              class="py-2.5 bg-white/5 hover:bg-white/10 text-xs font-semibold rounded-xl transition-all border border-white/10 flex items-center justify-center gap-1 cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.984c-.38-.073-.724-.216-.99-.413a1 1 0 10-1.2 1.6c.64.48 1.401.767 2.19.825V15a1 1 0 102 0v-.092c.677-.074 1.296-.289 1.776-.61.722-.48 1.324-1.256 1.324-2.298 0-1.042-.602-1.819-1.324-2.3-1.026-.684-2.025-.87-3.476-.97V7.25c.38.073.724.216.99.413a1 1 0 001.2-1.6 4.908 4.908 0 00-2.19-.825V5z" clip-rule="evenodd" />
+              </svg>
+              Credit Goal
+            </button>
+          </div>
+        </div>
+
+        <!-- ACTIVE SAVINGS MILESTONES -->
+        <div class="p-5 bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl shadow-xl space-y-4">
+          <div class="border-b border-white/5 pb-2.5 flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-bold uppercase tracking-wider text-white">Savings Targets</h3>
+              <p class="text-[10px] text-slate-400">Track and allocate funds for automated goals.</p>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <button (click)="openCreateGoalModal()" class="text-xs font-semibold text-primary hover:underline">
+                + New Goal
+              </button>
+            </div>
+          </div>
+
+          <!-- Milestones grid -->
+          <div class="space-y-4">
+            <div *ngFor="let goal of goals()" class="space-y-1.5">
+              <div class="flex items-center justify-between text-xs font-semibold">
+                <span class="text-slate-300">{{ goal.name }}</span>
+                <span class="text-white">{{ (goal.current / goal.target * 100) | number:'1.0-0' }}%</span>
+              </div>
+
+              <!-- Meter tracker -->
+              <div class="w-full bg-slate-900 border border-white/5 h-2 rounded-full overflow-hidden">
+                <div [ngClass]="goal.color" [style.width.%]="(goal.current / goal.target * 100)" class="h-full rounded-full transition-all duration-1000"></div>
+              </div>
+
+              <div class="flex items-center justify-between text-[10px] text-slate-400">
+                <span>${{ goal.current | number:'1.0-0' }} saved</span>
+                <span>Target: ${{ goal.target | number:'1.0-0' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT COLUMN: Dynamic Tabs workspace -->
+      <main class="col-span-12 lg:col-span-8 space-y-6">
+
+        <!-- TAB 1: PORTFOLIO OVERVIEW -->
+        <div *ngIf="activeTab() === 'portfolio'" class="space-y-6">
+          
+          <!-- FINANCIAL STATS BANNER -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            
+            <!-- Card: Account balance -->
+            <div class="bg-white/5 border border-white/10 backdrop-blur-md p-5 rounded-2xl shadow-xl relative overflow-hidden group">
+              <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Available Liquid Assets</span>
+              <span class="block text-2xl font-extrabold font-display text-white">${{ balance() | number:'1.2-2' }}</span>
+              <span class="text-[10px] text-primary font-bold mt-1.5 block">Encrypted Account Balance</span>
+            </div>
+
+            <!-- Card: Card Credit used -->
+            <div class="bg-white/5 border border-white/10 backdrop-blur-md p-5 rounded-2xl shadow-xl relative overflow-hidden group">
+              <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Used Card Credit</span>
+              <span class="block text-2xl font-extrabold font-display text-white">${{ creditUsed() | number:'1.2-2' }}</span>
+              
+              <!-- Progress bar -->
+              <div class="w-full bg-slate-900 h-1 rounded-full mt-2.5 overflow-hidden">
+                <div [style.width.%]="(creditUsed() / creditLimit() * 100)" class="bg-accent h-full rounded-full"></div>
+              </div>
+              <span class="text-[9px] text-slate-400 mt-1 block">Limit: ${{ creditLimit() | number:'1.0-0' }}</span>
+            </div>
+
+            <!-- Card: Monthly investments -->
+            <div class="bg-white/5 border border-white/10 backdrop-blur-md p-5 rounded-2xl shadow-xl relative overflow-hidden group">
+              <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Monthly Investment Outlay</span>
+              <span class="block text-2xl font-extrabold font-display text-white">${{ monthlyInvestments() | number:'1.2-2' }}</span>
+              <span class="text-[10px] text-primary font-semibold mt-1.5 block">Yielding +8.4% APY average</span>
+            </div>
+          </div>
+
+          <!-- RECENT ACTIVITY TABLE & FILTERS -->
+          <div class="bg-white/5 border border-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl space-y-4">
+            
+            <!-- Table Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-white/5 pb-4 gap-4">
+              <div>
+                <h3 class="text-sm font-bold uppercase tracking-wider text-white">Recent Transactions</h3>
+                <p class="text-[10px] text-slate-400">Activity report for this account portal over the last 15 days.</p>
+              </div>
+              
+              <!-- Simple Transfer Trigger -->
+              <button (click)="openTransferModal()" class="text-xs font-semibold text-primary hover:underline flex items-center gap-0.5 self-start md:self-auto cursor-pointer">
+                New Transfer
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Filters Bar -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 pb-2">
+              <!-- Search query -->
+              <div class="md:col-span-5 relative">
+                <input 
+                  type="text" 
+                  [value]="searchQuery()" 
+                  (input)="searchQuery.set($any($event.target).value)"
+                  placeholder="Search by payee name or transaction code..."
+                  class="w-full bg-slate-900/40 border border-white/5 rounded-xl py-2 px-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/25 transition-all pl-8" />
+                <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+              </div>
+
+              <!-- Category filter -->
+              <div class="md:col-span-3">
+                <select 
+                  [value]="selectedCategory()"
+                  (change)="selectedCategory.set($any($event.target).value)"
+                  class="w-full bg-slate-900/40 border border-white/5 rounded-xl py-2 px-3 text-xs text-white focus:outline-none focus:border-white/25 transition-all">
+                  <option value="all">All Categories</option>
+                  <option value="transfer">Transfers</option>
+                  <option value="investment">Investments</option>
+                  <option value="savings">Savings Allocations</option>
+                  <option value="income">Income / Payouts</option>
+                  <option value="travel">Travel</option>
+                  <option value="shopping">Shopping</option>
+                </select>
+              </div>
+
+              <!-- Sorting options -->
+              <div class="md:col-span-4">
+                <select 
+                  [value]="sortBy()"
+                  (change)="sortBy.set($any($event.target).value)"
+                  class="w-full bg-slate-900/40 border border-white/5 rounded-xl py-2 px-3 text-xs text-white focus:outline-none focus:border-white/25 transition-all">
+                  <option value="date">Sort By: Newest Activity</option>
+                  <option value="amount-desc">Sort By: Highest Amount</option>
+                  <option value="amount-asc">Sort By: Lowest Amount</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Table wrapper -->
+            <div class="overflow-x-auto border border-white/5 rounded-xl bg-slate-950/20">
+              <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr class="bg-white/2 border-b border-white/5 text-slate-450 uppercase tracking-widest text-[9px] font-bold">
+                    <th class="py-3 px-4">TX ID</th>
+                    <th class="py-3 px-4">Transaction Details</th>
+                    <th class="py-3 px-4">Category</th>
+                    <th class="py-3 px-4">Date</th>
+                    <th class="py-3 px-4 text-center">Status</th>
+                    <th class="py-3 px-4 text-right">Value</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5 text-slate-350">
+                  <tr *ngFor="let tx of filteredTransactions()" class="hover:bg-white/2 transition-colors">
+                    <td class="py-3.5 px-4 font-mono text-[10px] text-slate-500">{{ tx.id }}</td>
+                    <td class="py-3.5 px-4 font-semibold text-white">{{ tx.name }}</td>
+                    <td class="py-3.5 px-4 text-[10px] text-slate-400">
+                      <span class="px-2 py-0.5 rounded bg-slate-900 border border-white/5 text-slate-350 text-[10px]">
+                        {{ tx.category }}
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-4 text-slate-400 text-[11px]">{{ tx.date | date:'mediumDate' }}</td>
+                    <td class="py-3.5 px-4 text-center">
+                      <span [ngClass]="{
+                        'bg-primary/10 border border-primary/20 text-primary': tx.status === 'Complete',
+                        'bg-yellow-500/10 border border-yellow-500/20 text-yellow-400': tx.status === 'Pending',
+                        'bg-orange-500/10 border border-orange-500/20 text-orange-400': tx.status === 'Flagged'
+                      }" class="px-2 py-0.5 rounded-full text-[9px] font-bold">
+                        {{ tx.status }}
+                      </span>
+                    </td>
+                    <td [ngClass]="tx.amount >= 0 ? 'text-primary' : 'text-red-400'" class="py-3.5 px-4 text-right font-bold font-mono">
+                      {{ tx.amount >= 0 ? '+' : '' }}${{ tx.amount | number:'1.2-2' }}
+                    </td>
+                  </tr>
+
+                  <tr *ngIf="filteredTransactions().length === 0">
+                    <td colspan="6" class="py-8 text-center text-slate-500 font-medium">
+                      No transactions match your current search constraints.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TAB 2: CREDIT / LOAN SIMULATOR -->
+        <div *ngIf="activeTab() === 'simulator'" class="bg-white/5 border border-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl space-y-6">
+          <div>
+            <h3 class="text-base font-bold uppercase tracking-wider text-white">Private Credit & Loan Simulator</h3>
+            <p class="text-xs text-slate-400">Model personal financing arrangements and apply for automated payouts.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            
+            <!-- Left Side: Simulator Parameters -->
+            <div class="md:col-span-7 space-y-6">
+              <form [formGroup]="loanForm" (submit)="$event.preventDefault()" class="space-y-6">
+                <!-- Loan Amount input and slider -->
+                <div class="space-y-2">
+                  <div class="flex justify-between items-center text-xs font-semibold text-slate-300">
+                    <label for="borrowAmt">Borrowing Principal ($ USD)</label>
+                    <span class="text-white font-mono font-bold">${{ loanForm.get('loanAmount')?.value | number:'1.0-0' }}</span>
+                  </div>
+                  
+                  <input 
+                    type="range"
+                    formControlName="loanAmount"
+                    min="1000"
+                    max="500000"
+                    step="5000"
+                    class="w-full accent-primary bg-slate-900 rounded-lg appearance-none h-1.5 cursor-pointer" />
+                  
+                  <div class="relative mt-2">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-xs">$</span>
+                    <input 
+                      id="borrowAmt"
+                      type="number"
+                      formControlName="loanAmount"
+                      class="w-full bg-slate-950 border border-white/5 rounded-xl py-2 pl-7 pr-3 text-xs text-white focus:outline-none focus:border-white/20 transition-all font-mono" />
+                  </div>
+                  <div class="text-[10px] text-slate-500">
+                    Min principal: $1,000 | Max auto-evaluated limits: $500,000
+                  </div>
+                </div>
+
+                <!-- Loan Term months -->
+                <div class="space-y-2">
+                  <div class="flex justify-between items-center text-xs font-semibold text-slate-300">
+                    <label for="termMonths">Payback Term Duration</label>
+                    <span class="text-white font-mono font-bold">{{ loanForm.get('loanTerm')?.value }} Months</span>
+                  </div>
+
+                  <input 
+                    type="range"
+                    formControlName="loanTerm"
+                    min="6"
+                    max="72"
+                    step="6"
+                    class="w-full accent-primary bg-slate-900 rounded-lg appearance-none h-1.5 cursor-pointer" />
+                  
+                  <div class="relative mt-2">
+                    <input 
+                      id="termMonths"
+                      type="number"
+                      formControlName="loanTerm"
+                      class="w-full bg-slate-950 border border-white/5 rounded-xl py-2 px-3.5 text-xs text-white focus:outline-none focus:border-white/20 transition-all font-mono" />
+                  </div>
+                </div>
+
+                <!-- Interest rate (mock read-only for premium calculation) -->
+                <div class="space-y-2">
+                  <div class="flex justify-between items-center text-xs font-semibold text-slate-300">
+                    <label for="loanRate">Pre-Approved Interest Rate (Fixed APR)</label>
+                    <span class="text-primary font-bold">5.50% APR</span>
+                  </div>
+                  <input 
+                    id="loanRate"
+                    type="number"
+                    formControlName="interestRate"
+                    readonly
+                    class="w-full bg-slate-950/60 border border-white/5 rounded-xl py-2 px-3.5 text-xs text-slate-400 focus:outline-none font-mono cursor-not-allowed" />
+                </div>
+              </form>
+            </div>
+
+            <!-- Right Side: Loan Calculations Summary -->
+            <div class="md:col-span-5 bg-slate-950/40 border border-white/5 rounded-2xl p-5 flex flex-col justify-between gap-6">
+              <div class="space-y-4">
+                <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5 pb-2">Repayment Summary</span>
+
+                <!-- Monthly Payment Card -->
+                <div>
+                  <span class="block text-[10px] text-slate-400 uppercase">Estimated Monthly Installment</span>
+                  <span class="text-2xl font-extrabold text-white font-mono">${{ monthlyPayment() | number:'1.2-2' }}</span>
+                </div>
+
+                <!-- Financial Details grid -->
+                <div class="grid grid-cols-2 gap-4 pt-2 border-t border-white/5">
+                  <div>
+                    <span class="block text-[9px] text-slate-500 uppercase">Total Interest Payed</span>
+                    <span class="text-xs font-bold text-slate-200 font-mono">${{ totalInterest() | number:'1.2-2' }}</span>
+                  </div>
+                  <div>
+                    <span class="block text-[9px] text-slate-500 uppercase">Gross Payback Cost</span>
+                    <span class="text-xs font-bold text-slate-200 font-mono">${{ totalPayback() | number:'1.2-2' }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Application submission action -->
+              <div class="space-y-3 pt-4">
+                <button 
+                  (click)="onApplyLoan()"
+                  class="w-full py-3 bg-primary text-slate-950 text-xs font-extrabold rounded-xl hover:bg-primary-hover shadow-lg hover:shadow-primary/10 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                  </svg>
+                  Authorize & Credit Account
+                </button>
+                <p class="text-[9px] text-slate-500 text-center">
+                  Subject to credit validation and assets-under-management limits.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TAB 3: CUSTOMER PORTAL CONFIGURATION / SETTINGS -->
+        <div *ngIf="activeTab() === 'settings'" class="grid grid-cols-1 md:grid-cols-12 gap-8">
+          
+          <!-- Profile update form -->
+          <div class="md:col-span-7 bg-white/5 border border-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl space-y-5">
+            <div>
+              <h3 class="text-sm font-bold uppercase tracking-wider text-white">Profile Customization</h3>
+              <p class="text-xs text-slate-400">Update local registry profile metrics and account records.</p>
+            </div>
+
+            <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit()" class="space-y-4">
+              <!-- Name -->
+              <div class="space-y-1.5">
+                <label for="profName" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Full Display Name</label>
+                <input 
+                  id="profName"
+                  type="text"
+                  formControlName="editName"
+                  class="w-full bg-slate-950 border border-white/5 rounded-xl py-2 px-3.5 text-xs text-white focus:outline-none focus:border-white/20 transition-all" />
+                <div *ngIf="profileForm.get('editName')?.touched && profileForm.get('editName')?.invalid" class="text-[10px] text-red-400">
+                  Valid name of at least 2 characters is required.
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="space-y-1.5">
+                <label for="profEmail" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Secure Contact Email</label>
+                <input 
+                  id="profEmail"
+                  type="email"
+                  formControlName="editEmail"
+                  class="w-full bg-slate-950 border border-white/5 rounded-xl py-2 px-3.5 text-xs text-white focus:outline-none focus:border-white/20 transition-all" />
+                <div *ngIf="profileForm.get('editEmail')?.touched && profileForm.get('editEmail')?.invalid" class="text-[10px] text-red-400">
+                  Please enter a valid email address.
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="pt-4 border-t border-white/5 flex justify-end">
+                <button type="submit" class="bg-primary text-slate-950 text-xs font-bold px-6 py-2.5 rounded-full hover:bg-primary-hover shadow transition-all cursor-pointer">
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Security and theme configuration toggles -->
+          <div class="md:col-span-5 bg-white/5 border border-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl space-y-6">
+            <div>
+              <h3 class="text-sm font-bold uppercase tracking-wider text-white">Portal Preferences</h3>
+              <p class="text-xs text-slate-400">Manage multi-factor validations and notifications.</p>
+            </div>
+
+            <div class="space-y-4">
+              <!-- MFA Enforce Toggle -->
+              <div class="flex items-center justify-between py-2 border-b border-white/5">
+                <div>
+                  <span class="block text-xs font-bold text-slate-200">Enforce Multi-Factor (MFA)</span>
+                  <span class="block text-[10px] text-slate-500">Require TOTP on high-value transfers.</span>
+                </div>
+                <button 
+                  (click)="mfaEnabled.update(v => !v)"
+                  [ngClass]="mfaEnabled() ? 'bg-primary border-transparent' : 'bg-slate-900 border-white/10'"
+                  class="w-10 h-6 rounded-full border p-0.5 transition-colors duration-200 focus:outline-none flex items-center justify-start cursor-pointer"
+                  [class.justify-end]="mfaEnabled()">
+                  <span class="w-4.5 h-4.5 rounded-full bg-white shadow-md transition-transform duration-200"></span>
+                </button>
+              </div>
+
+              <!-- Push Notifications Toggle -->
+              <div class="flex items-center justify-between py-2 border-b border-white/5">
+                <div>
+                  <span class="block text-xs font-bold text-slate-200">Push Notifications</span>
+                  <span class="block text-[10px] text-slate-500">Alerts on desktop for recent transactions.</span>
+                </div>
+                <button 
+                  (click)="pushAlerts.update(v => !v)"
+                  [ngClass]="pushAlerts() ? 'bg-primary border-transparent' : 'bg-slate-900 border-white/10'"
+                  class="w-10 h-6 rounded-full border p-0.5 transition-colors duration-200 focus:outline-none flex items-center justify-start cursor-pointer"
+                  [class.justify-end]="pushAlerts()">
+                  <span class="w-4.5 h-4.5 rounded-full bg-white shadow-md transition-transform duration-200"></span>
+                </button>
+              </div>
+
+              <!-- Security logs view -->
+              <div class="p-3 bg-slate-950/50 border border-white/5 rounded-xl text-[10px] text-slate-400 space-y-1">
+                <span class="block font-bold text-slate-300 uppercase tracking-widest text-[9px] mb-1">Vault Auditing Integrity</span>
+                <p>Last Authentication: Today, {{ Date.now() | date:'mediumTime' }}</p>
+                <p>Origin IP Address: 192.168.1.109 (Authenticated Session)</p>
+                <p>Cryptographic Signature: AES-256-GCM Secure Channel</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- FLOATING ADVISOR CHAT SYSTEM WIDGET -->
+  <div class="fixed bottom-6 left-6 z-40 w-80 md:w-96 bg-[#0b131c]/95 border border-white/10 shadow-2xl rounded-2xl overflow-hidden backdrop-blur-md">
+    <!-- Chat Header -->
+    <div class="bg-slate-900/80 px-4 py-3 border-b border-white/5 flex items-center gap-3 justify-between">
+      <div class="flex items-center gap-2.5">
+        <!-- Advisor Avatar -->
+        <div class="relative">
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-xs text-slate-950 font-bold">
+            SJ
+          </div>
+          <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[#0b131c]"></span>
+        </div>
+        <div>
+          <span class="block text-xs font-bold text-white leading-none">Sarah Jenkins</span>
+          <span class="block text-[9px] text-primary mt-0.5 font-semibold">Wealth Specialist (Online)</span>
+        </div>
+      </div>
+      
+      <span class="text-[9px] text-slate-500 uppercase tracking-wider font-mono">Secured Chat</span>
+    </div>
+
+    <!-- Chat Messages Thread -->
+    <div class="h-48 overflow-y-auto p-4 space-y-3 bg-slate-950/20 text-xs">
+      <div 
+        *ngFor="let msg of chatMessages()"
+        [ngClass]="msg.sender === 'client' ? 'justify-end' : 'justify-start'"
+        class="flex w-full">
+        
+        <div 
+          [ngClass]="msg.sender === 'client' ? 'bg-primary text-slate-950 font-semibold' : 'bg-slate-900 border border-white/5 text-slate-350'"
+          class="max-w-[80%] rounded-2xl px-3 py-2 leading-relaxed shadow-sm">
+          <p class="whitespace-pre-line">{{ msg.text }}</p>
+          <span 
+            [ngClass]="msg.sender === 'client' ? 'text-slate-800' : 'text-slate-500'"
+            class="block text-[8px] text-right mt-1 font-mono">
+            {{ msg.time | date:'shortTime' }}
+          </span>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Chat input message form -->
+    <form [formGroup]="chatForm" (ngSubmit)="onSendChatMessage()" class="p-3 bg-slate-900/60 border-t border-white/5 flex gap-2">
+      <input 
+        type="text"
+        formControlName="messageText"
+        placeholder="Send private message to Sarah..."
+        class="flex-1 bg-slate-950 border border-white/5 rounded-xl py-1.5 px-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/25 transition-all" />
+      <button 
+        type="submit" 
+        [disabled]="chatForm.invalid"
+        class="bg-primary text-slate-950 disabled:bg-slate-800 disabled:text-slate-500 font-bold px-3 py-1.5 rounded-xl text-xs hover:bg-primary-hover shadow cursor-pointer transition-all">
+        Send
+      </button>
+    </form>
+  </div>
+
+  <!-- FIXED FLOATING TOASTS -->
+  <div class="fixed bottom-5 right-5 z-50 w-80 space-y-2 pointer-events-none">
+    <div 
+      *ngFor="let toast of toasts()" 
+      [ngClass]="{
+        'bg-green-500/20 border-green-500/40 text-green-400': toast.type === 'success',
+        'bg-blue-500/20 border-blue-500/40 text-blue-400': toast.type === 'info',
+        'bg-red-500/20 border-red-500/40 text-red-400': toast.type === 'error',
+        'bg-yellow-500/20 border-yellow-500/40 text-yellow-400': toast.type === 'warning'
+      }" 
+      class="p-4 rounded-xl border backdrop-blur-md shadow-lg pointer-events-auto flex items-start gap-2.5 text-xs animate-slide-in justify-between">
+      <div class="flex items-start gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mt-0.5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+        <span>{{ toast.message }}</span>
+      </div>
+      <button (click)="removeToast(toast.id)" class="text-slate-400 hover:text-white shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: SEND CAPITAL (TRANSFER) -->
+  <div *ngIf="isTransferModalOpen()" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+    <div class="w-full max-w-md bg-[#0b131c] border border-white/10 shadow-2xl rounded-2xl p-6 relative">
+      <div class="flex items-center justify-between border-b border-white/5 pb-3 mb-5">
+        <h3 class="text-base font-bold text-white font-display">Secure Wire Transfer</h3>
+        <button (click)="closeTransferModal()" class="text-slate-400 hover:text-white cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      <form [formGroup]="transferForm" (ngSubmit)="onTransferSubmit()" class="space-y-4">
+        <!-- Payee Name -->
+        <div class="space-y-1">
+          <label for="payee" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Payee Full Name</label>
+          <input 
+            id="payee"
+            type="text"
+            formControlName="payeeName"
+            placeholder="John Sterling"
+            class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all" />
+          <div *ngIf="transferForm.get('payeeName')?.touched && transferForm.get('payeeName')?.invalid" class="text-[10px] text-red-400">
+            Payee name is required.
+          </div>
+        </div>
+
+        <!-- Account Number -->
+        <div class="space-y-1">
+          <label for="accNum" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Destination Account Number / IBAN</label>
+          <input 
+            id="accNum"
+            type="text"
+            formControlName="accountNum"
+            placeholder="WS-ACC-11029"
+            class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all" />
+          <div *ngIf="transferForm.get('accountNum')?.touched && transferForm.get('accountNum')?.invalid" class="text-[10px] text-red-400">
+            Please enter a valid WealthSync alphanumeric account code (6-15 digits).
+          </div>
+        </div>
+
+        <!-- Transfer Amount -->
+        <div class="space-y-1">
+          <label for="amt" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Amount ($ USD)</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-xs">$</span>
+            <input 
+              id="amt"
+              type="number"
+              formControlName="amount"
+              placeholder="10,000"
+              class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 pl-7 pr-3.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all" />
+          </div>
+          <div *ngIf="transferForm.get('amount')?.touched && transferForm.get('amount')?.invalid" class="text-[10px] text-red-400">
+            Minimum transfer value is $10.
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/5 mt-5">
+          <button type="button" (click)="closeTransferModal()" class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">
+            Cancel
+          </button>
+          
+          <button type="submit" class="bg-primary text-slate-950 text-xs font-bold px-5 py-2.5 rounded-full hover:bg-primary-hover shadow transition-all cursor-pointer">
+            Authorize Wire
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ALLOCATE SAVINGS (CREDIT GOAL) -->
+  <div *ngIf="isGoalModalOpen()" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+    <div class="w-full max-w-md bg-[#0b131c] border border-white/10 shadow-2xl rounded-2xl p-6 relative">
+      <div class="flex items-center justify-between border-b border-white/5 pb-3 mb-5">
+        <h3 class="text-base font-bold text-white font-display">Allocate Savings to Goal</h3>
+        <button (click)="closeGoalModal()" class="text-slate-400 hover:text-white cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      <form [formGroup]="goalForm" (ngSubmit)="onGoalSubmit()" class="space-y-4">
+        <!-- Goal Selection -->
+        <div class="space-y-1.5">
+          <label for="goalSelect" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Select Target Savings Goal</label>
+          <select 
+            id="goalSelect"
+            formControlName="goalName"
+            class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all">
+            <option *ngFor="let goal of goals()" [value]="goal.name">
+              {{ goal.name }} (Saved: ${{ goal.current | number:'1.0-0' }} / ${{ goal.target | number:'1.0-0' }})
+            </option>
+          </select>
+        </div>
+
+        <!-- Allocate value -->
+        <div class="space-y-1.5">
+          <label for="goalAmt" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Amount to Allocate ($ USD)</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-xs">$</span>
+            <input 
+              id="goalAmt"
+              type="number"
+              formControlName="amount"
+              placeholder="5,000"
+              class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 pl-7 pr-3.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all" />
+          </div>
+          <div *ngIf="goalForm.get('amount')?.touched && goalForm.get('amount')?.invalid" class="text-[10px] text-red-400">
+            Amount must be at least $1.
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/5 mt-5">
+          <button type="button" (click)="closeGoalModal()" class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">
+            Cancel
+          </button>
+          
+          <button type="submit" class="bg-primary text-slate-950 text-xs font-bold px-5 py-2.5 rounded-full hover:bg-primary-hover shadow transition-all cursor-pointer">
+            Allocate Capital
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CREATE NEW SAVINGS GOAL -->
+  <div *ngIf="isCreateGoalModalOpen()" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+    <div class="w-full max-w-md bg-[#0b131c] border border-white/10 shadow-2xl rounded-2xl p-6 relative">
+      <div class="flex items-center justify-between border-b border-white/5 pb-3 mb-5">
+        <h3 class="text-base font-bold text-white font-display">Create Custom Savings Goal</h3>
+        <button (click)="closeCreateGoalModal()" class="text-slate-400 hover:text-white cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      <form [formGroup]="createGoalForm" (ngSubmit)="onCreateGoalSubmit()" class="space-y-4">
+        <!-- Goal Name -->
+        <div class="space-y-1">
+          <label for="newGoal" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Savings Target Name</label>
+          <input 
+            id="newGoal"
+            type="text"
+            formControlName="newGoalName"
+            placeholder="Luxury yacht escrow"
+            class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all" />
+          <div *ngIf="createGoalForm.get('newGoalName')?.touched && createGoalForm.get('newGoalName')?.invalid" class="text-[10px] text-red-400">
+            Goal name of at least 3 characters is required.
+          </div>
+        </div>
+
+        <!-- Target Amount -->
+        <div class="space-y-1">
+          <label for="targetAmt" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Target Value ($ USD)</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-xs">$</span>
+            <input 
+              id="targetAmt"
+              type="number"
+              formControlName="targetAmount"
+              placeholder="75,000"
+              class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 pl-7 pr-3.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all" />
+          </div>
+          <div *ngIf="createGoalForm.get('targetAmount')?.touched && createGoalForm.get('targetAmount')?.invalid" class="text-[10px] text-red-400">
+            Target amount must be at least $100.
+          </div>
+        </div>
+
+        <!-- Color Badge Selector -->
+        <div class="space-y-1.5">
+          <label for="goalColorSelect" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Progress Tracker Color Accent</label>
+          <select 
+            id="goalColorSelect"
+            formControlName="goalColor"
+            class="w-full bg-slate-950 border border-white/10 rounded-xl py-2 px-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all">
+            <option value="bg-primary">Green Accent (Primary)</option>
+            <option value="bg-accent">Yellow Accent (Secondary)</option>
+            <option value="bg-blue-500">Blue Accent (Info)</option>
+            <option value="bg-purple-500">Purple Accent (Amethyst)</option>
+            <option value="bg-pink-500">Pink Accent (Vibrant)</option>
+          </select>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/5 mt-5">
+          <button type="button" (click)="closeCreateGoalModal()" class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">
+            Cancel
+          </button>
+          
+          <button type="submit" class="bg-primary text-slate-950 text-xs font-bold px-5 py-2.5 rounded-full hover:bg-primary-hover shadow transition-all cursor-pointer">
+            Create Goal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
