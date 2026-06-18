@@ -41,11 +41,11 @@ export class LoginComponent {
     this.isLoading.set(true);
     this.loginError.set(null);
 
-    // Simulate backend communication
+        // Simulate backend communication
     setTimeout(() => {
       const { email, password } = this.loginForm.value;
       
-      let targetRoute = '/dashboard';
+      let targetRoute = '/customer';
       let userRole = 'Standard Client';
       let userName = 'John Doe';
       let userBalance = '12500';
@@ -73,7 +73,7 @@ export class LoginComponent {
         } else if (userRole === 'Wealth Manager') {
           targetRoute = '/manager';
         } else {
-          targetRoute = '/dashboard';
+          targetRoute = '/customer';
         }
       } else {
         // Fallback checks
@@ -86,12 +86,12 @@ export class LoginComponent {
           userRole = 'Wealth Manager';
           userName = 'Sarah Jenkins';
         } else if (email === 'client@wealthsync.com' || email === 'demo@wealthsync.com') {
-          targetRoute = '/dashboard';
+          targetRoute = '/customer';
           userRole = 'Premium Client';
           userName = 'Alice Smith';
           userBalance = '425000';
         } else {
-          targetRoute = '/dashboard';
+          targetRoute = '/customer';
           userRole = 'Standard Client';
           const rawName = email.split('@')[0];
           userName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
@@ -104,7 +104,7 @@ export class LoginComponent {
         localStorage.setItem('ws_user_name', userName);
         
         // Also seed initial balance for the client if they are a client
-        if (targetRoute === '/dashboard') {
+        if (targetRoute === '/customer') {
           localStorage.setItem('ws_client_balance', userBalance);
         }
       }
