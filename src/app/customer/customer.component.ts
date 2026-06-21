@@ -2,6 +2,9 @@ import { Component, ChangeDetectionStrategy, signal, computed, inject } from '@a
 import { CommonModule } from '@angular/common';
 import { FormsModule, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { ThemeService } from '../services/theme.service';
+import { LiveStatusService } from '../services/live-status.service';
+import { LiveStatusBarComponent } from '../shared/live-status-bar/live-status-bar.component';
 
 interface SavingsGoal {
   name: string;
@@ -28,7 +31,7 @@ interface ChatMessage {
 @Component({
   selector: 'app-customer',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink, LiveStatusBarComponent],
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -36,6 +39,8 @@ interface ChatMessage {
 export class CustomerComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  protected readonly theme = inject(ThemeService);
+  protected readonly live = inject(LiveStatusService);
   protected readonly Date = Date;
 
   // Profile Information Signals
@@ -201,7 +206,8 @@ export class CustomerComponent {
       // Sync active theme configuration from admin settings if saved
       const savedTheme = localStorage.getItem('ws_admin_theme');
       if (savedTheme && ['emerald', 'sapphire', 'amethyst', 'carbon'].includes(savedTheme)) {
-        this.cardColorTheme.set(savedTheme as any);
+        this.cardColorTheme.set(savedTheme as 'emerald' | 'sapphire' | 'amethyst' | 'carbon');
+        this.theme.setTheme(savedTheme as 'emerald' | 'sapphire' | 'amethyst' | 'carbon');
       }
     }
   }
@@ -226,7 +232,14 @@ export class CustomerComponent {
 
   setCardTheme(theme: 'emerald' | 'sapphire' | 'amethyst' | 'carbon'): void {
     this.cardColorTheme.set(theme);
+    this.theme.setTheme(theme);
     this.addToast(`Card style preset updated to ${theme.toUpperCase()}`, 'info');
+  }
+
+  setPortalTheme(theme: 'emerald' | 'sapphire' | 'amethyst' | 'carbon'): void {
+    this.theme.setTheme(theme);
+    this.cardColorTheme.set(theme);
+    this.addToast(`Portal theme applied: ${theme.toUpperCase()}`, 'success');
   }
 
   setCardType(type: 'credit' | 'debit'): void {
@@ -306,6 +319,7 @@ export class CustomerComponent {
     };
 
     this.transactions.update(curr => [newTx, ...curr]);
+    this.live.touchSync();
     this.closeTransferModal();
 
     if (newTx.status === 'Flagged') {
