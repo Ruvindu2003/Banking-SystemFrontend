@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-slate-950 text-slate-100 font-sans pb-16 overflow-x-hidden relative">
+<div [ngClass]="'theme-' + theme.currentTheme()" class="min-h-screen bg-slate-950 text-slate-100 font-sans pb-16 overflow-x-hidden relative">
   <!-- Dynamic glows -->
   <div class="absolute top-0 right-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
   <div class="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-accent/5 rounded-full blur-3xl pointer-events-none"></div>
@@ -47,6 +47,12 @@
         </button>
       </div>
     </header>
+
+    <app-live-status-bar
+      class="block mb-6"
+      label="Executive suite — client portfolios syncing"
+      [showConnections]="true"
+    />
 
     <!-- Executive Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

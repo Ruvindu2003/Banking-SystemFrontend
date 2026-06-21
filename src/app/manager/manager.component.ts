@@ -2,6 +2,8 @@ import { Component, ChangeDetectionStrategy, signal, computed, inject } from '@a
 import { CommonModule } from '@angular/common';
 import { FormsModule, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { ThemeService } from '../services/theme.service';
+import { LiveStatusBarComponent } from '../shared/live-status-bar/live-status-bar.component';
 
 interface ManagedClient {
   id: string;
@@ -25,7 +27,7 @@ interface PendingApproval {
 @Component({
   selector: 'app-manager',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink, LiveStatusBarComponent],
   templateUrl: './manager.component.html',
   styleUrls: ['./manager.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -33,6 +35,7 @@ interface PendingApproval {
 export class ManagerComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  protected readonly theme = inject(ThemeService);
 
   // Manager Metadata
   managerName = signal('Sarah Jenkins');

@@ -2,6 +2,8 @@ import { Component, ChangeDetectionStrategy, signal, computed, effect, inject } 
 import { CommonModule } from '@angular/common';
 import { FormsModule, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { ThemeService } from '../services/theme.service';
+import { LiveStatusBarComponent } from '../shared/live-status-bar/live-status-bar.component';
 
 interface MockUser {
   id: string;
@@ -25,17 +27,17 @@ interface MockTransaction {
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink, LiveStatusBarComponent],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminComponent {
   private readonly fb = inject(FormBuilder);
+  protected readonly theme = inject(ThemeService);
 
-  // Customization States
-  currentTheme = signal<'emerald' | 'sapphire' | 'amethyst' | 'carbon'>('emerald');
-  cardStyle = signal<'glass' | 'flat' | 'neon'>('glass');
+  currentTheme = this.theme.currentTheme;
+  cardStyle = this.theme.cardStyle;
   
   // Widget visibility states
   showStats = signal(true);
@@ -134,12 +136,6 @@ export class AdminComponent {
   constructor() {
     // Load config from LocalStorage if present
     if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('ws_admin_theme');
-      if (savedTheme) this.currentTheme.set(savedTheme as any);
-
-      const savedCardStyle = localStorage.getItem('ws_admin_card_style');
-      if (savedCardStyle) this.cardStyle.set(savedCardStyle as any);
-
       const savedStats = localStorage.getItem('ws_admin_show_stats');
       if (savedStats) this.showStats.set(savedStats === 'true');
 
@@ -171,8 +167,6 @@ export class AdminComponent {
     // Effect to auto-save configs & users list
     effect(() => {
       if (typeof window !== 'undefined') {
-        localStorage.setItem('ws_admin_theme', this.currentTheme());
-        localStorage.setItem('ws_admin_card_style', this.cardStyle());
         localStorage.setItem('ws_admin_show_stats', String(this.showStats()));
         localStorage.setItem('ws_admin_show_chart', String(this.showChart()));
         localStorage.setItem('ws_admin_show_users', String(this.showUsers()));
@@ -185,12 +179,12 @@ export class AdminComponent {
 
   // Theme & card management
   setTheme(theme: 'emerald' | 'sapphire' | 'amethyst' | 'carbon'): void {
-    this.currentTheme.set(theme);
+    this.theme.setTheme(theme);
     this.addToast(`Theme changed to ${theme.toUpperCase()}`, 'info');
   }
 
   setCardStyle(style: 'glass' | 'flat' | 'neon'): void {
-    this.cardStyle.set(style);
+    this.theme.setCardStyle(style);
     this.addToast(`Card style changed to ${style.toUpperCase()}`, 'info');
   }
 
@@ -205,8 +199,7 @@ export class AdminComponent {
   }
 
   resetLayout(): void {
-    this.currentTheme.set('emerald');
-    this.cardStyle.set('glass');
+    this.theme.reset();
     this.showStats.set(true);
     this.showChart.set(true);
     this.showUsers.set(true);
